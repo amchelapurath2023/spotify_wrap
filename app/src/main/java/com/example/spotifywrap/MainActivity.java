@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.spotify.sdk.android.auth.AuthorizationClient;
 import com.spotify.sdk.android.auth.AuthorizationRequest;
 import com.spotify.sdk.android.auth.AuthorizationResponse;
@@ -46,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<String> favArtists = new ArrayList<>();
     private String var = "short";
 
+    Button btnLogOut;
+    FirebaseAuth mAuth;
 
 
     // I have commented out the textviews for the token and code, as well as the get code button functionality and method.
@@ -78,10 +82,16 @@ public class MainActivity extends AppCompatActivity {
             getToken();
 
         });
+        btnLogOut = findViewById(R.id.btnLogout);
+        mAuth = FirebaseAuth.getInstance();
 
+        btnLogOut.setOnClickListener(view ->{
+            mAuth.signOut();
+            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+//
 //        codeBtn.setOnClickListener((v) -> {
 //            getCode();
-//        });
+        });
 
         shortBtn.setOnClickListener((v) -> {
             var = "short";
@@ -502,6 +512,15 @@ public class MainActivity extends AppCompatActivity {
     private void cancelCall() {
         if (mCall != null) {
             mCall.cancel();
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user == null){
+            startActivity(new Intent(MainActivity.this, LoginActivity.class));
         }
     }
 

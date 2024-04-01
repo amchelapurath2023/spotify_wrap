@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="imageView" type="id" />
+    <item name="etRegEmail" type="id" />
+    <item name="etRegPass" type="id" />
+    <item name="btnRegister" type="id" />
+    <item name="tvLoginHere" type="id" />
+    <item name="etResetEmail" type="id"/>
+    <item name="btnReset" type="id"/>
+</resources>
