@@ -22,20 +22,20 @@
 <!--                <data android:host="@string/host_name" android:scheme="@string/scheme_name"/>-->
 
             </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-                <data android:host="auth" android:scheme="spotifywrap"/>
-            </intent-filter>
-<!--            IF APP DOES NOT WORK REPLACE INTENT-FILTER WITH VERSION BELOW-->
 <!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-
+<!--                <action android:name="android.intent.action.VIEW"/>-->
+<!--                <category android:name="android.intent.category.DEFAULT"/>-->
+<!--                <category android:name="android.intent.category.BROWSABLE"/>-->
 <!--                <data android:host="auth" android:scheme="spotifywrap"/>-->
 <!--            </intent-filter>-->
+<!--            IF APP DOES NOT WORK REPLACE INTENT-FILTER WITH VERSION BELOW-->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+
+                <data android:host="auth" android:scheme="spotifywrap"/>
+            </intent-filter>
 
         </activity>
     </application>
