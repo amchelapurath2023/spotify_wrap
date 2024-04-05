@@ -30,8 +30,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Random;
-import org.json.JSONArray;
-
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 public class MainActivity extends AppCompatActivity {
 
     public static final String CLIENT_ID = "8852c891d90a44e8be613f09ded6d8b3";
@@ -48,8 +48,12 @@ public class MainActivity extends AppCompatActivity {
     private String recArtist;
     private ArrayList<String> favArtists = new ArrayList<>();
     private String var = "short";
+    private ArrayList<String> topsongurl = new ArrayList<>();
 
-    private JSONArray playTracks = new JSONArray();
+    MediaPlayer mediaPlayer;
+
+
+
 
 
 
@@ -62,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Initialize the views
-        tokenTextView = (TextView) findViewById(R.id.token_text_view);
+//        tokenTextView = (TextView) findViewById(R.id.token_text_view);
 //        codeTextView = (TextView) findViewById(R.id.code_text_view);
         profileTextView = (TextView) findViewById(R.id.profile_text_view);
         artistTextView = (TextView) findViewById(R.id.artist_text_view);
@@ -76,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
         Button shortBtn = (Button) findViewById(R.id.timeframe_button_short);
         Button mediumBtn = (Button) findViewById(R.id.timeframe_button_medium);
         Button longBtn = (Button) findViewById(R.id.timeframe_button_long);
+
 
         // Set the click listeners for the buttons
 
@@ -143,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
         // Check which request code is present (if any)
         if (AUTH_TOKEN_REQUEST_CODE == requestCode) {
             mAccessToken = response.getAccessToken();
-            setTextAsync(mAccessToken, tokenTextView);
+//            setTextAsync(mAccessToken, tokenTextView);
 
         } else if (AUTH_CODE_REQUEST_CODE == requestCode) {
             mAccessCode = response.getCode();
@@ -366,7 +371,8 @@ public class MainActivity extends AppCompatActivity {
                                 .getString("url");
 
                         String previewUrl = track.getString("preview_url");
-                        playTracks.put("spotify:track:" + previewUrl);
+                        topsongurl.add(previewUrl);
+
 
                         // Append artist,images, name, preview to the StringBuilder
                         trackInfo.append("Song Name: ").append(trackName).append("\n");
@@ -389,17 +395,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void getRelatedArtists(Request request) throws JSONException {
-
-        //request to play top songs
-        JSONObject data = new JSONObject();
-        data.put("uris", playTracks);
-        data.put("position_ms", 0);
-        final Request playTopSongs = new Request.Builder()
-                .url("https://api.spotify.com/v1/me/player/play")
-                .addHeader("Authorization", "Bearer " + mAccessToken)
-                .addHeader("Content-Type:", "application/json")
-                .put(RequestBody.create(MediaType.parse("application/json"), data.toString()))
-                .build();
 
         cancelCall();
         mCall = mOkHttpClient.newCall(request);
@@ -470,7 +465,7 @@ public class MainActivity extends AppCompatActivity {
                     // Update the UI with the fetched artist information
                     setTextAsync(relatedInfo.toString(), relatedTextView);
                     favArtists = new ArrayList<>();
-                    playSongs(playTopSongs);
+                    playSongs();
                 } catch (JSONException e) {
                     Log.d("JSON", "Failed to parse data: " + e);
                     Toast.makeText(MainActivity.this, "Failed to parse data, watch Logcat for more details",
@@ -480,32 +475,36 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void playSongs(Request request) {
+    private void playSongs(){
+        for (int i = 0; i < 1; i++){
+            playAudio(topsongurl.get(i));
+        }
+    }
 
-        cancelCall();
-        mCall = mOkHttpClient.newCall(request);
+    private void playAudio(String audioUrl) {
 
-        mCall.enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                Log.d("HTTP", "Failed to fetch data: " + e);
-                Toast.makeText(MainActivity.this, "Failed to fetch data, watch Logcat for more details",
-                        Toast.LENGTH_SHORT).show();
-            }
 
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-//                try {
-//
-//                } catch (JSONException e) {
-//                    Log.d("JSON", "Failed to parse data: " + e);
-//                    Toast.makeText(MainActivity.this, "Failed to parse data, watch Logcat for more details",
-//                            Toast.LENGTH_SHORT).show();
-//                }
-                Toast.makeText(MainActivity.this, "Successfully playing",
-                            Toast.LENGTH_SHORT).show();
-            }
-        });
+        // initializing media player
+        mediaPlayer = new MediaPlayer();
+
+        // below line is use to set the audio
+        // stream type for our media player.
+        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+
+        // below line is use to set our
+        // url to our media player.
+        try {
+            mediaPlayer.setDataSource(audioUrl);
+            // below line is use to prepare
+            // and start our media player.
+            mediaPlayer.prepare();
+            mediaPlayer.start();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // below line is use to display a toast message.
+        Toast.makeText(this, "Audio started playing..", Toast.LENGTH_SHORT).show();
     }
 
 
