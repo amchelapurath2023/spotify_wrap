@@ -23,14 +23,17 @@ import java.io.IOException;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Random;
-
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 public class MainActivity extends AppCompatActivity {
 
     public static final String CLIENT_ID = "8852c891d90a44e8be613f09ded6d8b3";
@@ -47,6 +50,21 @@ public class MainActivity extends AppCompatActivity {
     private String recArtist;
     private ArrayList<String> favArtists = new ArrayList<>();
     private String var = "short";
+    private ArrayList<String> topsongurl = new ArrayList<>();
+
+
+
+    private ArrayList<String> userProfileArray = new ArrayList<>();
+    private ArrayList<ArrayList<String>> topArtists = new ArrayList<>();
+
+    private ArrayList<ArrayList<String>> topSongs = new ArrayList<>();
+
+    private ArrayList<ArrayList<String>> recArtists = new ArrayList<>();
+
+    MediaPlayer mediaPlayer;
+
+
+
 
     Button btnLogOut;
     FirebaseAuth mAuth;
@@ -75,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
         Button shortBtn = (Button) findViewById(R.id.timeframe_button_short);
         Button mediumBtn = (Button) findViewById(R.id.timeframe_button_medium);
         Button longBtn = (Button) findViewById(R.id.timeframe_button_long);
+
 
         // Set the click listeners for the buttons
 
@@ -148,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
         // Check which request code is present (if any)
         if (AUTH_TOKEN_REQUEST_CODE == requestCode) {
             mAccessToken = response.getAccessToken();
-            //setTextAsync(mAccessToken, tokenTextView);
+//            setTextAsync(mAccessToken, tokenTextView);
 
         } else if (AUTH_CODE_REQUEST_CODE == requestCode) {
             mAccessCode = response.getCode();
@@ -213,6 +232,13 @@ public class MainActivity extends AppCompatActivity {
                     userInfo.append("Spotify URL: ").append(userProfile.getString("external_urls")).append("\n\n");
 
 
+                    // Array for extracting data
+                    userProfileArray.add(userProfile.getString("display_name"));
+                    userProfileArray.add(userProfile.getString("email"));
+                    userProfileArray.add(imageUrl);
+                    userProfileArray.add(userProfile.getString("external_urls"));
+
+
                     setTextAsync(userInfo.toString(), profileTextView);
                     getTopArtists(requestArtist);
 
@@ -272,6 +298,7 @@ public class MainActivity extends AppCompatActivity {
 
                     for (int i = 0; i < Math.min(itemsArray.length(), 10); i++) {
                         JSONObject artistObject = itemsArray.getJSONObject(i);
+                        ArrayList <String> artistArray = new ArrayList<>();
                         String artistName = artistObject.getString("name");
 
                         //get top artist id
@@ -296,12 +323,19 @@ public class MainActivity extends AppCompatActivity {
 
                         // Append artist,images and genres to the StringBuilder
                         artistInfo.append("Artist: ").append(artistName).append("\n");
+                        artistArray.add(artistName);
                         if(genres.length() == 0) {
                             artistInfo.append("Genres: Not Available ").append("\n");
+                            artistArray.add("Genre Not Available");
                         } else{
                             artistInfo.append("Genres: ").append(genres).append("\n");
+                            artistArray.add(genres.toString());
                         }
                         artistInfo.append("Image URL: " + "\n").append(imageUrl).append("\n\n");
+                        artistArray.add(imageUrl);
+
+                        // array for extracting data
+                        topArtists.add(artistArray);
                     }
 
                     // Update the UI with the fetched artist information
@@ -346,11 +380,14 @@ public class MainActivity extends AppCompatActivity {
                     JSONObject jsonObject = new JSONObject(responseData);
                     JSONArray items = jsonObject.getJSONArray("items");
 
+
                     // StringBuilder to store the artists and songs
                     StringBuilder trackInfo = new StringBuilder();
                     trackInfo.append("YOUR TOP 10 SONGS: " + "\n\n\n");
                     for (int i = 0; i < Math.min(items.length(), 10); i++) {
                         JSONObject track = items.getJSONObject(i);
+
+                        ArrayList<String> songArray = new ArrayList<>();
 
                         // Extracting track details
                         String trackName = track.getString("name");
@@ -371,12 +408,24 @@ public class MainActivity extends AppCompatActivity {
                                 .getString("url");
 
                         String previewUrl = track.getString("preview_url");
+                        topsongurl.add(previewUrl);
+
 
                         // Append artist,images, name, preview to the StringBuilder
                         trackInfo.append("Song Name: ").append(trackName).append("\n");
                         trackInfo.append("Artist(s): ").append(artists).append("\n");
                         trackInfo.append("Image URL: " + "\n").append(coverImage).append("\n");
                         trackInfo.append("Song preview: " + "\n").append(previewUrl).append("\n\n");
+
+                        songArray.add(trackName);
+                        songArray.add(artists.toString());
+                        songArray.add(coverImage);
+                        songArray.add(previewUrl);
+
+
+                        topSongs.add(songArray);
+
+
                     }
 
                     // Update the UI with the fetched artist information
@@ -392,8 +441,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void getRelatedArtists(Request request) {
-
+    public void getRelatedArtists(Request request) throws JSONException {
 
         cancelCall();
         mCall = mOkHttpClient.newCall(request);
@@ -450,13 +498,21 @@ public class MainActivity extends AppCompatActivity {
 
                         // Append artist,images and genres to the StringBuilder if not already a top artist and is picked
                         if(!favArtists.contains(artistId) && pick.contains(i)) {
+                            ArrayList<String> recArray = new ArrayList<>();
                             relatedInfo.append("Recommended Artist: ").append(artistName).append("\n");
+                            recArray.add(artistName);
                             if(genres.length() == 0) {
                                 relatedInfo.append("Genres: Not Available ").append("\n");
+                                recArray.add("Genres: Not Available");
                             } else{
                                 relatedInfo.append("Genres: ").append(genres).append("\n");
+                                recArray.add(genres.toString());
                             }
                             relatedInfo.append("Image URL: " + "\n").append(imageUrl).append("\n\n");
+                            recArray.add(imageUrl);
+
+
+                            recArtists.add(recArray);
 
                         }
                     }
@@ -464,6 +520,13 @@ public class MainActivity extends AppCompatActivity {
                     // Update the UI with the fetched artist information
                     setTextAsync(relatedInfo.toString(), relatedTextView);
                     favArtists = new ArrayList<>();
+                    Intent intent = new Intent(MainActivity.this, playsong.class);
+                    intent.putStringArrayListExtra("topsongurls", topsongurl);
+                    intent.putStringArrayListExtra("userProfile", userProfileArray);
+                    intent.putExtra("topArtists",topArtists );
+                    intent.putExtra("topSongs", topSongs);
+                    intent.putExtra("recArtists", recArtists);
+                    startActivity(intent);
                 } catch (JSONException e) {
                     Log.d("JSON", "Failed to parse data: " + e);
                     Toast.makeText(MainActivity.this, "Failed to parse data, watch Logcat for more details",
@@ -472,6 +535,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+
 
 
 
@@ -495,7 +560,7 @@ public class MainActivity extends AppCompatActivity {
     private AuthorizationRequest getAuthenticationRequest(AuthorizationResponse.Type type) {
         return new AuthorizationRequest.Builder(CLIENT_ID, type, getRedirectUri().toString())
                 .setShowDialog(false)
-                .setScopes(new String[] { "user-read-email", "user-top-read" }) // <--- Change the scope of your requested token here
+                .setScopes(new String[] { "user-read-email", "user-top-read", "user-modify-playback-state"}) // <--- Change the scope of your requested token here
                 .setCampaign("your-campaign-token")
                 .build();
     }
