@@ -43,6 +43,11 @@
             </intent-filter>
 
         </activity>
+        <activity
+            android:name=".playsong"
+            android:exported = "true">
+
+        </activity>
     </application>
 
 </manifest>
