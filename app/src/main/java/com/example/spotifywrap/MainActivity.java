@@ -59,7 +59,12 @@ public class MainActivity extends AppCompatActivity {
 
     private ArrayList<ArrayList<String>> recArtists = new ArrayList<>();
 
-    MediaPlayer mediaPlayer;
+    private String formatUser;
+    private String formatArtist;
+    private String formatSong;
+    private String formatRec;
+
+
 
 
 
@@ -229,7 +234,8 @@ public class MainActivity extends AppCompatActivity {
                     userProfileArray.add(userProfile.getString("external_urls"));
 
 
-                    setTextAsync(userInfo.toString(), profileTextView);
+                    //setTextAsync(userInfo.toString(), profileTextView);
+                    formatUser = userInfo.toString();
                     getTopArtists(requestArtist);
 
 
@@ -329,7 +335,9 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     // Update the UI with the fetched artist information
-                    setTextAsync(artistInfo.toString(), artistTextView);
+                    //setTextAsync(artistInfo.toString(), artistTextView);
+                    formatArtist = artistInfo.toString();
+
                     getTopTracks(requestTrack);
                 } catch (JSONException e) {
                     Log.d("JSON", "Failed to parse data: " + e);
@@ -419,7 +427,8 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     // Update the UI with the fetched artist information
-                    setTextAsync(trackInfo.toString(), trackTextView);
+                    //setTextAsync(trackInfo.toString(), trackTextView);
+                    formatSong = trackInfo.toString();
                     getRelatedArtists(requestRelArtists);
 
                 } catch (JSONException e) {
@@ -508,15 +517,24 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     // Update the UI with the fetched artist information
-                    setTextAsync(relatedInfo.toString(), relatedTextView);
+                    //setTextAsync(relatedInfo.toString(), relatedTextView);
+                    formatRec = relatedInfo.toString();
                     favArtists = new ArrayList<>();
+
+                    // this part creates the intent and passes in the data
                     Intent intent = new Intent(MainActivity.this, playsong.class);
                     intent.putStringArrayListExtra("topsongurls", topsongurl);
                     intent.putStringArrayListExtra("userProfile", userProfileArray);
                     intent.putExtra("topArtists",topArtists );
                     intent.putExtra("topSongs", topSongs);
                     intent.putExtra("recArtists", recArtists);
+                    intent.putExtra("formatUser", formatUser);
+                    intent.putExtra("formatArtist", formatArtist);
+                    intent.putExtra("formatSong", formatSong);
+                    intent.putExtra("formatRec", formatRec);
+
                     startActivity(intent);
+                    // ----------------------------
                 } catch (JSONException e) {
                     Log.d("JSON", "Failed to parse data: " + e);
                     Toast.makeText(MainActivity.this, "Failed to parse data, watch Logcat for more details",

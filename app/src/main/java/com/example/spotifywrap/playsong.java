@@ -25,6 +25,9 @@ public class playsong extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
+        // this portion contains the data from the api cals
         Intent intent = getIntent();
 
         topsongurls = intent.getStringArrayListExtra("topsongurls");
@@ -32,30 +35,36 @@ public class playsong extends AppCompatActivity {
         ArrayList<ArrayList<String>> topArtists = (ArrayList<ArrayList<String>>) getIntent().getSerializableExtra("topArtists");
         ArrayList<ArrayList<String>> topSongs = (ArrayList<ArrayList<String>>) getIntent().getSerializableExtra("topSongs");
         ArrayList<String> userProfile = intent.getStringArrayListExtra("userProfile");
+        String formatUser = getIntent().getStringExtra("formatUser");
+        String formatArtist = getIntent().getStringExtra("formatArtist");
+        String formatSong = getIntent().getStringExtra("formatSong");
+        String formatRec = getIntent().getStringExtra("formatUser");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.playsong);
+        // ---------------------------------
 
         displayTextView = findViewById(R.id.display_text);
 
         StringBuilder dummy = new StringBuilder();
-        for (int i = 0; i < userProfile.size(); i++){
-            dummy.append(userProfile.get(i));
-        }
-        for (int i = 0; i < topArtists.size(); i++){
-            for (int j = 0; j < 3; j++) {
-                dummy.append(topArtists.get(i).get(j));
-            }
-        }
-        for (int i = 0; i < recArtists.size(); i++){
-            for (int j = 0; j < 3; j++) {
-                dummy.append(recArtists.get(i).get(j));
-            }
-        }
-        for (int i = 0; i < topSongs.size(); i++){
-            for (int j = 0; j < 4; j++) {
-                dummy.append(topSongs.get(i).get(j));
-            }
-        }
+//        for (int i = 0; i < userProfile.size(); i++){
+//            dummy.append(userProfile.get(i));
+//        }
+//        for (int i = 0; i < topArtists.size(); i++){
+//            for (int j = 0; j < 3; j++) {
+//                dummy.append(topArtists.get(i).get(j));
+//            }
+//        }
+//        for (int i = 0; i < recArtists.size(); i++){
+//            for (int j = 0; j < 3; j++) {
+//                dummy.append(recArtists.get(i).get(j));
+//            }
+//        }
+//        for (int i = 0; i < topSongs.size(); i++){
+//            for (int j = 0; j < 4; j++) {
+//                dummy.append(topSongs.get(i).get(j));
+//            }
+//        }
+        dummy.append(formatUser).append(formatArtist).append(formatSong).append(formatRec);
         setTextAsync(dummy.toString(), displayTextView);
         playNextTrack();
     }
