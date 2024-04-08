@@ -86,41 +86,6 @@
                 android:text="Last Several Years" />
 
         </LinearLayout>
-
-
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/profile_text_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="16sp" />
-                <TextView
-                    android:id="@+id/artist_text_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="16sp" />
-                <TextView
-                    android:id="@+id/track_text_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="16sp" />
-                <TextView
-                    android:id="@+id/related_text_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="16sp" />
-            </LinearLayout>
-        </ScrollView>
-
-
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
