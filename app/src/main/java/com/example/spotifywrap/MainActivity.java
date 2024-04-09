@@ -61,7 +61,11 @@ public class MainActivity extends AppCompatActivity {
 
     private ArrayList<ArrayList<String>> recArtists = new ArrayList<>();
 
-    MediaPlayer mediaPlayer;
+    private StringBuilder formatDisplay = new StringBuilder();
+
+    private String time;
+
+
 
 
 
@@ -79,12 +83,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Initialize the views
+
 //        tokenTextView = (TextView) findViewById(R.id.token_text_view);
 //        codeTextView = (TextView) findViewById(R.id.code_text_view);
-        profileTextView = (TextView) findViewById(R.id.profile_text_view);
-        artistTextView = (TextView) findViewById(R.id.artist_text_view);
-        trackTextView = (TextView) findViewById(R.id.track_text_view);
-        relatedTextView = (TextView) findViewById(R.id.related_text_view);
+
 
 
         // Initialize the buttons
@@ -114,18 +116,21 @@ public class MainActivity extends AppCompatActivity {
 
         shortBtn.setOnClickListener((v) -> {
             var = "short";
+            time = "month's";
             onGetUserProfileClicked();
-            Toast.makeText(this, "Last month's summary!", Toast.LENGTH_SHORT).show();
+
         });
         mediumBtn.setOnClickListener((v) -> {
             var = "medium";
+            time = "6 months'";
             onGetUserProfileClicked();
-            Toast.makeText(this, "Last 6 month's summary!", Toast.LENGTH_SHORT).show();
+
         });
         longBtn.setOnClickListener((v) -> {
             var = "long";
+            time = "several years'";
             onGetUserProfileClicked();
-            Toast.makeText(this, "Last several years' summary!", Toast.LENGTH_SHORT).show();
+
         });
 
     }
@@ -182,9 +187,19 @@ public class MainActivity extends AppCompatActivity {
      */
     public void onGetUserProfileClicked() {
         if (mAccessToken == null) {
-            Toast.makeText(this, "You need to get an access token first!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "You need to connect with Spotify first!", Toast.LENGTH_SHORT).show();
             return;
         }
+        Toast.makeText(this, "Last " + time + " summary!", Toast.LENGTH_SHORT).show();
+
+        //Create a new string for the summary
+        formatDisplay = new StringBuilder();
+        //create new data arrays for the summary
+        userProfileArray = new ArrayList<>();
+        topArtists = new ArrayList<>();
+        topSongs = new ArrayList<>();
+        recArtists = new ArrayList<>();
+
 
         // Create a request to get the user profile
         final Request requestProfile = new Request.Builder()
@@ -239,7 +254,8 @@ public class MainActivity extends AppCompatActivity {
                     userProfileArray.add(userProfile.getString("external_urls"));
 
 
-                    setTextAsync(userInfo.toString(), profileTextView);
+                    //add formatted info to display string
+                    formatDisplay.append(userInfo);
                     getTopArtists(requestArtist);
 
 
@@ -338,8 +354,9 @@ public class MainActivity extends AppCompatActivity {
                         topArtists.add(artistArray);
                     }
 
-                    // Update the UI with the fetched artist information
-                    setTextAsync(artistInfo.toString(), artistTextView);
+                    //add formatted info to display string
+                    formatDisplay.append(artistInfo);
+
                     getTopTracks(requestTrack);
                 } catch (JSONException e) {
                     Log.d("JSON", "Failed to parse data: " + e);
@@ -422,14 +439,14 @@ public class MainActivity extends AppCompatActivity {
                         songArray.add(coverImage);
                         songArray.add(previewUrl);
 
-
+                        //add to array for extracting data
                         topSongs.add(songArray);
 
 
                     }
 
-                    // Update the UI with the fetched artist information
-                    setTextAsync(trackInfo.toString(), trackTextView);
+                    //add formatted info to display string
+                    formatDisplay.append(trackInfo);
                     getRelatedArtists(requestRelArtists);
 
                 } catch (JSONException e) {
@@ -517,16 +534,30 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
 
-                    // Update the UI with the fetched artist information
-                    setTextAsync(relatedInfo.toString(), relatedTextView);
+                    // add formatted info to display string
+                    formatDisplay.append(relatedInfo);
                     favArtists = new ArrayList<>();
+
+
+
+                    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                    // this part creates the intent and passes in the data
+                    // Top song urls is an array containing the urls of the top songs for song playback
+                    // userProfile is an arraylist containing the user info in an array form.
+                    // topArtists, topSongs, recArtists are arraylists of arraylists.
+                    // Basically, each nested arraylist is an artist/song.
+                    // The proper indices to access whatever things u need inside the arrays can be found on our meeting docs under the notes for 4/7/24.
+                    //The formatDisplay is a placeholder display so that the info from userProfile, topArtists, topSongs, recArtists is readable.
+
                     Intent intent = new Intent(MainActivity.this, playsong.class);
                     intent.putStringArrayListExtra("topsongurls", topsongurl);
                     intent.putStringArrayListExtra("userProfile", userProfileArray);
                     intent.putExtra("topArtists",topArtists );
                     intent.putExtra("topSongs", topSongs);
                     intent.putExtra("recArtists", recArtists);
+                    intent.putExtra("formatDisplay", formatDisplay.toString());
                     startActivity(intent);
+                    // ----------------------------
                 } catch (JSONException e) {
                     Log.d("JSON", "Failed to parse data: " + e);
                     Toast.makeText(MainActivity.this, "Failed to parse data, watch Logcat for more details",

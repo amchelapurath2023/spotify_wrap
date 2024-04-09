@@ -25,6 +25,16 @@ public class playsong extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
+        //!!!!!!!!!!!!!!!!!!!!!
+        // this portion contains the data from the api calls
+        // Top song urls is an array containing the urls of the top songs for song playback
+        // userProfile is an arraylist containing the user info in an array form.
+        // topArtists, topSongs, recArtists are arraylists of arraylists.
+        // Basically, each nested arraylist is an artist/song.
+        // The proper indices to access whatever things u need inside the arrays can be found on our meeting docs under the notes for 4/7/24.
+        //The formatDisplay is a placeholder display so that the info from userProfile, topArtists, topSongs, recArtists is readable.
         Intent intent = getIntent();
 
         topsongurls = intent.getStringArrayListExtra("topsongurls");
@@ -32,34 +42,25 @@ public class playsong extends AppCompatActivity {
         ArrayList<ArrayList<String>> topArtists = (ArrayList<ArrayList<String>>) getIntent().getSerializableExtra("topArtists");
         ArrayList<ArrayList<String>> topSongs = (ArrayList<ArrayList<String>>) getIntent().getSerializableExtra("topSongs");
         ArrayList<String> userProfile = intent.getStringArrayListExtra("userProfile");
+        String formatDisplay = getIntent().getStringExtra("formatDisplay");
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.playsong);
+        // ---------------------------------
+        // here I am first just displaying the formatted display string just so there is some summary. You can change this part for UI
 
         displayTextView = findViewById(R.id.display_text);
 
         StringBuilder dummy = new StringBuilder();
-        for (int i = 0; i < userProfile.size(); i++){
-            dummy.append(userProfile.get(i));
-        }
-        for (int i = 0; i < topArtists.size(); i++){
-            for (int j = 0; j < 3; j++) {
-                dummy.append(topArtists.get(i).get(j));
-            }
-        }
-        for (int i = 0; i < recArtists.size(); i++){
-            for (int j = 0; j < 3; j++) {
-                dummy.append(recArtists.get(i).get(j));
-            }
-        }
-        for (int i = 0; i < topSongs.size(); i++){
-            for (int j = 0; j < 4; j++) {
-                dummy.append(topSongs.get(i).get(j));
-            }
-        }
+        dummy.append(formatDisplay);
         setTextAsync(dummy.toString(), displayTextView);
-        playNextTrack();
+        playNextTrack(); // you need to keep this cus it calls the song playback method.
+        Toast.makeText(this, "Playing your top songs!", Toast.LENGTH_SHORT).show();// keep this too
     }
-    //method to play all top tracks preview
+
+
+    //method to play all top tracks preview. Dont change this part plsss
     private void playNextTrack() {
         if (mediaPlayer != null) {
             mediaPlayer.release();
@@ -75,8 +76,6 @@ public class playsong extends AppCompatActivity {
                 mediaPlayer.setDataSource(audioUrl);
                 mediaPlayer.prepare();
                 mediaPlayer.start();
-                Toast.makeText(this, "Audio started playing..", Toast.LENGTH_SHORT).show();
-
                 mediaPlayer.setOnCompletionListener(mp -> {
                     // When current track finishes playing, play the next track
                     currentTrackIndex++;
@@ -88,7 +87,7 @@ public class playsong extends AppCompatActivity {
             }
         } else {
             // No more tracks to play
-            Toast.makeText(this, "No more tracks to play", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Hope You Enjoyed Your Summary!", Toast.LENGTH_SHORT).show();
         }
     }
 
