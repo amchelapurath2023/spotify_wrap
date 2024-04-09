@@ -48,6 +48,22 @@
             android:label="@string/title_activity_sign_in"
             android:theme="@style/Theme.SpotifyWrap" />
         <activity
+            android:name=".SettingsActivity"
+            android:exported="false"
+            android:label="SettingsActivity"
+            android:theme="@style/Theme.SpotifyWrap" />
+        <activity
+            android:name=".ResetPassword"
+            android:exported="false"
+            android:label="ResetPassword"
+            android:theme="@style/Theme.SpotifyWrap" />
+        <activity
+            android:name=".DeleteAccount"
+            android:exported="false"
+            android:label="DeleteAccount"
+            android:theme="@style/Theme.SpotifyWrap" />
+
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

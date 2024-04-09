@@ -95,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
         Button shortBtn = (Button) findViewById(R.id.timeframe_button_short);
         Button mediumBtn = (Button) findViewById(R.id.timeframe_button_medium);
         Button longBtn = (Button) findViewById(R.id.timeframe_button_long);
+        Button settings = (Button) findViewById(R.id.btnSettings);
 
 
         // Set the click listeners for the buttons
@@ -113,6 +114,11 @@ public class MainActivity extends AppCompatActivity {
 //        codeBtn.setOnClickListener((v) -> {
 //            getCode();
         });
+
+        settings.setOnClickListener(view ->{
+            startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+        });
+
 
         shortBtn.setOnClickListener((v) -> {
             var = "short";
