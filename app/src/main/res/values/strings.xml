@@ -63,4 +63,12 @@
     <string name="enterEmailId">Enter the registered Email ID</string>
     <string name="reset_password">Reset Password</string>
     <string name="user_domain_com">user@domain.com</string>
+    <string name="top_song_cover">Top Song Cover</string>
+    <string name="top_artists_title">top artists</string>
+    <string name="top_songs_title">top songs</string>
+    <string name="top_artist_one">1.</string>
+    <string name="top_artist_two">2.</string>
+    <string name="top_artist_three">3.</string>
+    <string name="top_artist_five">5.</string>
+    <string name="top_artist_four">4.</string>
 </resources>

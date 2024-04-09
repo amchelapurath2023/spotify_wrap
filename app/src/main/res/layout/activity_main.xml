@@ -28,6 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
+            android:fontFamily="@font/karmatic_arcade"
             android:text="Connect with Spotify" />
 
 <!--        <TextView-->
@@ -83,6 +84,36 @@
                 android:layout_weight="1"
                 android:layout_gravity="center"
                 android:text="Last Several Years" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/last_month_wrapped_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:text="Month Wrapped" />
+
+            <Button
+                android:id="@+id/last_six_wrapped_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:text="6 Months Wrapped" />
+
+            <Button
+                android:id="@+id/last_years_wrapped_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:text="Several Years Wrapped" />
 
         </LinearLayout>
 
