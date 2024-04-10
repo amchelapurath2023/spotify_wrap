@@ -2,6 +2,7 @@ package com.example.spotifywrap;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.TextView;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -19,6 +20,7 @@ public class playsong extends AppCompatActivity {
     // class to handle wrapped activity, where the spotify wrapped is displayed
     private TextView displayTextView;
     private MediaPlayer mediaPlayer;
+    private Button goBack;
     private int currentTrackIndex = 0;
     ArrayList<String> topsongurls;
 
@@ -51,6 +53,12 @@ public class playsong extends AppCompatActivity {
         // here I am first just displaying the formatted display string just so there is some summary. You can change this part for UI
 
         displayTextView = findViewById(R.id.display_text);
+        goBack = findViewById(R.id.go_back);
+
+        goBack.setOnClickListener(view ->{
+            mediaPlayer.release();
+            startActivity(new Intent(playsong.this, MainActivity.class));
+        });
 
         StringBuilder dummy = new StringBuilder();
         dummy.append(formatDisplay);

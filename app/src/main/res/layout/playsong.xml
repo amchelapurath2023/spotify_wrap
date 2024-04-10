@@ -17,8 +17,16 @@
                 android:layout_height="wrap_content"
                 android:text="Display of User Profile"
                 android:textSize="16sp" />
+            <Button
+                android:id="@+id/go_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Return to Menu" />
         </LinearLayout>
     </ScrollView>
+
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
