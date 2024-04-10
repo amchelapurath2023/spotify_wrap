@@ -2,17 +2,34 @@ package com.example.spotifywrap;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Stack;
 
 public class playsong extends AppCompatActivity {
@@ -21,6 +38,8 @@ public class playsong extends AppCompatActivity {
     private MediaPlayer mediaPlayer;
     private int currentTrackIndex = 0;
     ArrayList<String> topsongurls;
+
+    private Map<String, Object> summaries = new HashMap<>(); // local copy of wrapped summaries to upload
 
 
     @Override
@@ -57,6 +76,45 @@ public class playsong extends AppCompatActivity {
         setTextAsync(dummy.toString(), displayTextView);
         playNextTrack(); // you need to keep this cus it calls the song playback method.
         Toast.makeText(this, "Playing your top songs!", Toast.LENGTH_SHORT).show();// keep this too
+
+
+        // Saving summary to firestore !!!
+        FirebaseAuth mAuth;
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+        String UID = user.getUid(); // user id
+        FirebaseFirestore db = FirebaseFirestore.getInstance(); // db of wrapped for each user
+        CollectionReference colRef = db.collection("wraplify").document(UID).collection("wrap-summaries"); // existing collection for a specific user's summaries
+
+        Map<String, Object> docData = new HashMap<>();
+        ArrayList<String> topSongTitles = new ArrayList<String>();
+        ArrayList<String> topArtistNames = new ArrayList<String>();
+        docData.put("topSongs", topSongTitles);
+        docData.put("topArtists", topArtistNames);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("'Date\n'dd-MM-yyyy '\n\nand\n\nTime\n'HH:mm:ss z");
+        String currentDateAndTime = sdf.format(new Date());
+        String summaryId = "summary" + currentDateAndTime;
+
+        colRef.document(summaryId)
+                .set(docData)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("INFO", "DocumentSnapshot successfully written!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("ERROR", "Error writing document", e);
+                    }
+                });
+
+
+
+
+
     }
 
 
