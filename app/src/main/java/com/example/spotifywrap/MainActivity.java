@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.Firebase;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.spotify.sdk.android.auth.AuthorizationClient;
@@ -64,6 +65,9 @@ public class MainActivity extends AppCompatActivity {
     private StringBuilder formatDisplay = new StringBuilder();
 
     private String time;
+    private String username;
+
+
 
 
 
@@ -96,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
         Button mediumBtn = (Button) findViewById(R.id.timeframe_button_medium);
         Button longBtn = (Button) findViewById(R.id.timeframe_button_long);
         Button settings = (Button) findViewById(R.id.btnSettings);
+        TextView welcome = findViewById(R.id.textView);
 
 
         // Set the click listeners for the buttons
@@ -105,7 +110,20 @@ public class MainActivity extends AppCompatActivity {
 
         });
         btnLogOut = findViewById(R.id.btnLogout);
+
+        Intent intent = getIntent();
+        if (intent != null && intent.hasExtra("username")) {
+            username = intent.getStringExtra("username");
+            // Now 'variable' contains the value passed from SettingsActivity
+        }
+        //
         mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (username == null && user != null) {
+            username = user.getEmail();
+
+        }
+        welcome.setText("Welcome to Wraplify, " + username);
 
         btnLogOut.setOnClickListener(view ->{
             mAuth.signOut();
@@ -116,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         settings.setOnClickListener(view ->{
-            startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+            startActivity(new Intent(MainActivity.this, SettingsActivity.class).putExtra("username", username));
         });
 
 
@@ -205,6 +223,7 @@ public class MainActivity extends AppCompatActivity {
         topArtists = new ArrayList<>();
         topSongs = new ArrayList<>();
         recArtists = new ArrayList<>();
+        topsongurl = new ArrayList<>();
 
 
         // Create a request to get the user profile
