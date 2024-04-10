@@ -19,11 +19,18 @@ public class DeleteAccount extends AppCompatActivity {
     private Button resetPasswordButton;
     private TextView back;
     private FirebaseAuth firebaseAuth;
+    String username;
+    String email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.delete_account);
+        Intent intent = getIntent();
+        if(intent != null) {
+            username = intent.getStringExtra("username");
+            email =  intent.getStringExtra("email");
+        }
 
         firebaseAuth = FirebaseAuth.getInstance();
 
@@ -40,7 +47,7 @@ public class DeleteAccount extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(DeleteAccount.this, SettingsActivity.class));
+                startActivity(new Intent(DeleteAccount.this, SettingsActivity.class).putExtra("username", username).putExtra("email", email));
             }
         });
     }

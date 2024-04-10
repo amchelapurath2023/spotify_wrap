@@ -84,6 +84,7 @@ public class SettingsActivity extends AppCompatActivity {
                 if (!username.isEmpty()) {
                     // Clear the TextView
                     newusername.setText("");
+                    curusername.setText("Your Account Username: " + username);
 
                     // Now 'variable' contains the text from the TextView
                     // You can use it as needed
@@ -96,13 +97,13 @@ public class SettingsActivity extends AppCompatActivity {
         });
 
         reset.setOnClickListener(view -> {
-            startActivity(new Intent(SettingsActivity.this, ResetPassword.class));
+            startActivity(new Intent(SettingsActivity.this, ResetPassword.class).putExtra("username", username).putExtra("email", email));
         });
         back.setOnClickListener(view -> {
             startActivity(new Intent(SettingsActivity.this, MainActivity.class).putExtra("username", username));
         });
         delete.setOnClickListener(view -> {
-            startActivity(new Intent(SettingsActivity.this, DeleteAccount.class));
+            startActivity(new Intent(SettingsActivity.this, DeleteAccount.class).putExtra("username", username).putExtra("email", email));
         });
 
     }

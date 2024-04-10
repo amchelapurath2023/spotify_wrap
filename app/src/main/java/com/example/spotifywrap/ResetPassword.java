@@ -18,11 +18,19 @@ public class ResetPassword extends AppCompatActivity {
     private EditText emailAddress;
     private Button resetPasswordButton;
     private TextView back;
+    String username;
+    String email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.reset_password);
+        Intent intent = getIntent();
+        if (intent != null) {
+            username = intent.getStringExtra("username");
+            email =  intent.getStringExtra("email");
+        }
+
 
         emailAddress = findViewById(R.id.etResetEmail);
         resetPasswordButton = findViewById(R.id.btnReset);
@@ -35,7 +43,7 @@ public class ResetPassword extends AppCompatActivity {
             }
         });
         back.setOnClickListener(view ->{
-            startActivity(new Intent(ResetPassword.this, SettingsActivity.class));
+            startActivity(new Intent(ResetPassword.this, SettingsActivity.class).putExtra("username", username).putExtra("email", email));
         });
     }
 
