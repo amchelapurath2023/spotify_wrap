@@ -20,6 +20,7 @@ public class ResetPassword extends AppCompatActivity {
     private TextView back;
     String username;
     String email;
+    private String token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +30,7 @@ public class ResetPassword extends AppCompatActivity {
         if (intent != null) {
             username = intent.getStringExtra("username");
             email =  intent.getStringExtra("email");
+            token = intent.getStringExtra("token");
         }
 
 
@@ -43,7 +45,7 @@ public class ResetPassword extends AppCompatActivity {
             }
         });
         back.setOnClickListener(view ->{
-            startActivity(new Intent(ResetPassword.this, SettingsActivity.class).putExtra("username", username).putExtra("email", email));
+            startActivity(new Intent(ResetPassword.this, SettingsActivity.class).putExtra("username", username).putExtra("email", email).putExtra("token", token));
         });
     }
 

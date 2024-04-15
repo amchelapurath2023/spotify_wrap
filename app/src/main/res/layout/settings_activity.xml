@@ -94,6 +94,12 @@
                 android:text="Click here to reset password" />
 
             <Button
+                android:id="@+id/ResetSpotify"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Click here to connect new Spotify account" />
+
+            <Button
                 android:id="@+id/Delete"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

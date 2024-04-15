@@ -62,6 +62,16 @@
             android:exported="false"
             android:label="DeleteAccount"
             android:theme="@style/Theme.SpotifyWrap" />
+        <activity
+            android:name=".connectSpotifySettings"
+            android:exported="false"
+            android:label="connectSpotifySettings"
+            android:theme="@style/Theme.SpotifyWrap" />
+        <activity
+            android:name=".connectSpotifyRegister"
+            android:exported="false"
+            android:label="connectSpotifyRegister"
+            android:theme="@style/Theme.SpotifyWrap" />
 
         <activity
             android:name=".MainActivity"

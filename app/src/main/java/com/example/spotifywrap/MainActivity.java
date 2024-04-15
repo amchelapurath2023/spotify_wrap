@@ -33,8 +33,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Random;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
+
 public class MainActivity extends AppCompatActivity {
 
     public static final String CLIENT_ID = "8852c891d90a44e8be613f09ded6d8b3";
@@ -94,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         // Initialize the buttons
-        Button tokenBtn = (Button) findViewById(R.id.connect_btn);
+//        Button tokenBtn = (Button) findViewById(R.id.connect_btn);
 //        Button codeBtn = (Button) findViewById(R.id.code_btn);
         Button shortBtn = (Button) findViewById(R.id.timeframe_button_short);
         Button mediumBtn = (Button) findViewById(R.id.timeframe_button_medium);
@@ -105,16 +104,22 @@ public class MainActivity extends AppCompatActivity {
 
         // Set the click listeners for the buttons
 
-        tokenBtn.setOnClickListener((v) -> {
-            getToken();
-
-        });
+//        tokenBtn.setOnClickListener((v) -> {
+//            getToken();
+//
+//        });
         btnLogOut = findViewById(R.id.btnLogout);
 
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra("username")) {
             username = intent.getStringExtra("username");
             // Now 'variable' contains the value passed from SettingsActivity
+        }
+        if (intent != null && intent.hasExtra("token")) {
+            String temp = intent.getStringExtra("token");
+            if (temp != null) {
+                mAccessToken = temp;
+            }
         }
         //
         mAuth = FirebaseAuth.getInstance();
@@ -134,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         settings.setOnClickListener(view ->{
-            startActivity(new Intent(MainActivity.this, SettingsActivity.class).putExtra("username", username));
+            startActivity(new Intent(MainActivity.this, SettingsActivity.class).putExtra("username", username).putExtra("token", mAccessToken));
         });
 
 

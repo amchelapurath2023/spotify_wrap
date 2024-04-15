@@ -34,9 +34,11 @@ public class SettingsActivity extends AppCompatActivity {
     Button delete;
     Button back;
     Button change;
+    Button connect;
 
     String username;
     String email;
+    String token;
     TextView newusername;
     TextView curusername;
     TextView curemail;
@@ -62,11 +64,18 @@ public class SettingsActivity extends AppCompatActivity {
         newusername = findViewById(R.id.etResetEmail);
         curemail = findViewById(R.id.email);
         curusername = findViewById(R.id.username);
+        connect = findViewById(R.id.ResetSpotify);
         mAuth = FirebaseAuth.getInstance();
 
         FirebaseUser user = mAuth.getCurrentUser();
         if (user != null) {
             email = user.getEmail();
+        }
+        if (intent != null && intent.hasExtra("token")) {
+            String temp = intent.getStringExtra("token");
+            if (temp != null) {
+                token = temp;
+            }
         }
 
         curusername.setText("Your Account Username: " + username);
@@ -79,6 +88,8 @@ public class SettingsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // Get the text from the TextView
                 username = newusername.getText().toString();
+                //Store username to firebase here
+
 
                 // Check if the text is not empty
                 if (!username.isEmpty()) {
@@ -86,9 +97,6 @@ public class SettingsActivity extends AppCompatActivity {
                     newusername.setText("");
                     curusername.setText("Your Account Username: " + username);
 
-                    // Now 'variable' contains the text from the TextView
-                    // You can use it as needed
-                    // For example, display it in a toast message
                     Toast.makeText(SettingsActivity.this, "Username successfully updated!", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(SettingsActivity.this, "Enter a new username", Toast.LENGTH_SHORT).show();
@@ -97,13 +105,16 @@ public class SettingsActivity extends AppCompatActivity {
         });
 
         reset.setOnClickListener(view -> {
-            startActivity(new Intent(SettingsActivity.this, ResetPassword.class).putExtra("username", username).putExtra("email", email));
+            startActivity(new Intent(SettingsActivity.this, ResetPassword.class).putExtra("username", username).putExtra("email", email).putExtra("token", token));
         });
         back.setOnClickListener(view -> {
-            startActivity(new Intent(SettingsActivity.this, MainActivity.class).putExtra("username", username));
+            startActivity(new Intent(SettingsActivity.this, MainActivity.class).putExtra("username", username).putExtra("token", token));
         });
         delete.setOnClickListener(view -> {
-            startActivity(new Intent(SettingsActivity.this, DeleteAccount.class).putExtra("username", username).putExtra("email", email));
+            startActivity(new Intent(SettingsActivity.this, DeleteAccount.class).putExtra("username", username).putExtra("email", email).putExtra("token", token));
+        });
+        connect.setOnClickListener(view -> {
+            startActivity(new Intent(SettingsActivity.this, connectSpotifySettings.class).putExtra("username", username).putExtra("email", email).putExtra("token", token));
         });
 
     }

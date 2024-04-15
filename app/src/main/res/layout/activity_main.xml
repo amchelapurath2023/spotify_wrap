@@ -33,16 +33,16 @@
         app:layout_constraintVertical_bias="0.05" />
 
     <!-- Connect with Spotify button -->
-    <Button
-        android:id="@+id/connect_btn"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Connect with Spotify"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5" />
+<!--    <Button-->
+<!--        android:id="@+id/connect_btn"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="16dp"-->
+<!--        android:text="Connect with Spotify"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/textView"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.5" />-->
 
     <!-- "Choose Your Summary" TextView -->
     <TextView
@@ -51,7 +51,7 @@
         android:layout_height="wrap_content"
         android:text="Choose Your Summary: "
         android:textSize="16sp"
-        app:layout_constraintTop_toBottomOf="@+id/connect_btn"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp" />
