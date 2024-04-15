@@ -88,10 +88,15 @@ public class playsong extends AppCompatActivity {
 
         Map<String, Object> docData = new HashMap<>();
         ArrayList<String> topSongTitles = new ArrayList<String>();
+        for (int j = 0; j < topSongs.size(); j++) {
+            topSongTitles.add(topSongs.get(j).get(0));
+        }
         ArrayList<String> topArtistNames = new ArrayList<String>();
+        for (int j = 0; j < topArtists.size(); j++) {
+            topArtistNames.add(topArtists.get(j).get(0));
+        }
         docData.put("topSongs", topSongTitles);
         docData.put("topArtists", topArtistNames);
-
         SimpleDateFormat sdf = new SimpleDateFormat("'Date\n'dd-MM-yyyy '\n\nand\n\nTime\n'HH:mm:ss z");
         String currentDateAndTime = sdf.format(new Date());
         String summaryId = "summary" + currentDateAndTime;
