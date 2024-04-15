@@ -160,4 +160,5 @@ public class connectSpotifyRegister extends AppCompatActivity {
         cancelCall();
         super.onDestroy();
     }
+
 }
