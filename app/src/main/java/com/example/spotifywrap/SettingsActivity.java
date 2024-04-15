@@ -21,6 +21,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.Firebase;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 
 public class SettingsActivity extends AppCompatActivity {
@@ -51,6 +53,13 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings_activity);
+
+        FirebaseAuth mAuth;
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser userId = mAuth.getCurrentUser();
+        String UID = userId.getUid(); // firebase user id
+        FirebaseFirestore db = FirebaseFirestore.getInstance(); // db of wrapped for each user
+        DocumentReference docRef = db.collection("wraplify").document(UID);
 
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra("username")) {
@@ -89,7 +98,7 @@ public class SettingsActivity extends AppCompatActivity {
                 // Get the text from the TextView
                 username = newusername.getText().toString();
                 //Store username to firebase here
-
+                docRef.update("username", username);
 
                 // Check if the text is not empty
                 if (!username.isEmpty()) {

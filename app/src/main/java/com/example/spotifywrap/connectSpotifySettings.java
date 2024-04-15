@@ -10,6 +10,8 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.spotify.sdk.android.auth.AuthorizationClient;
 import com.spotify.sdk.android.auth.AuthorizationRequest;
 import com.spotify.sdk.android.auth.AuthorizationResponse;
@@ -42,6 +44,7 @@ public class connectSpotifySettings extends AppCompatActivity {
     FirebaseAuth mAuth;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +59,13 @@ public class connectSpotifySettings extends AppCompatActivity {
 
         connect = (Button) findViewById(R.id.btnConnect);
         back = (TextView) findViewById(R.id.tvBack);
+
+        FirebaseAuth mAuth;
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+        String UID = user.getUid(); // firebase user id
+        FirebaseFirestore db = FirebaseFirestore.getInstance(); // db of wrapped for each user
+        DocumentReference docRef = db.collection("wraplify").document(UID);
 
 
 
@@ -72,6 +82,7 @@ public class connectSpotifySettings extends AppCompatActivity {
                 mAccessToken = token;
             }
             // store mAccessToken to firebase here
+            docRef.update("spotifyId", mAccessToken);
             startActivity(new Intent(connectSpotifySettings.this, SettingsActivity.class).putExtra("token", mAccessToken).putExtra("username", username).putExtra("email", email));
         });
 

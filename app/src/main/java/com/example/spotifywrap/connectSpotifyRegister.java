@@ -12,9 +12,15 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.spotify.sdk.android.auth.AuthorizationClient;
 import com.spotify.sdk.android.auth.AuthorizationRequest;
 import com.spotify.sdk.android.auth.AuthorizationResponse;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
@@ -52,6 +58,13 @@ public class connectSpotifyRegister extends AppCompatActivity {
         connect = (Button) findViewById(R.id.btnConnect);
         back = (TextView) findViewById(R.id.tvBack);
 
+        FirebaseAuth mAuth;
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+        String UID = user.getUid(); // firebase user id
+        FirebaseFirestore db = FirebaseFirestore.getInstance(); // db of wrapped for each user
+//        DocumentReference docRef = db.collection("wraplify").document(UID);
+
 
 
         // Set the click listeners for the buttons
@@ -67,6 +80,12 @@ public class connectSpotifyRegister extends AppCompatActivity {
                 Toast.makeText(this, "You need to connect a Spotify account to finish setup.", Toast.LENGTH_SHORT).show();
             } else {
                 // store mAccesstoken in firebase here
+                CollectionReference colRef = db.collection("wraplify");
+                Map<String, Object> docData = new HashMap<>();
+                docData.put("spotifyId", mAccessToken);
+
+                colRef.document(UID).set(docData);
+
                 startActivity(new Intent(connectSpotifyRegister.this, LoginActivity.class));
             }
 
