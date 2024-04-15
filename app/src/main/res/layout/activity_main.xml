@@ -45,7 +45,11 @@
 <!--            android:text="Request Code" />-->
 
 
-
+        <Button
+            android:id="@+id/past_wraps_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="View Past Wraps" />
 
         <TextView
             android:id="@+id/choose_timeframe_text_view"

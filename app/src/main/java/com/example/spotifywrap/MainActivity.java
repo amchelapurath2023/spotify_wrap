@@ -23,17 +23,14 @@ import java.io.IOException;
 
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.RequestBody;
 import okhttp3.Response;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Random;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
+
 public class MainActivity extends AppCompatActivity {
 
     public static final String CLIENT_ID = "8852c891d90a44e8be613f09ded6d8b3";
@@ -96,6 +93,8 @@ public class MainActivity extends AppCompatActivity {
         Button mediumBtn = (Button) findViewById(R.id.timeframe_button_medium);
         Button longBtn = (Button) findViewById(R.id.timeframe_button_long);
 
+        Button pastWrapsBtn = (Button) findViewById(R.id.past_wraps_button);
+
 
         // Set the click listeners for the buttons
 
@@ -113,6 +112,11 @@ public class MainActivity extends AppCompatActivity {
 //        codeBtn.setOnClickListener((v) -> {
 //            getCode();
         });
+
+        pastWrapsBtn.setOnClickListener(view -> {
+            startActivity(new Intent(MainActivity.this, WrapHistoryActivity.class));
+        });
+
 
         shortBtn.setOnClickListener((v) -> {
             var = "short";
