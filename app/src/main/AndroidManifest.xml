@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+    <!-- Permissions of internet -->
+<!--    <uses-permission android:name="android.permission.INTERNET" />-->
+<!--    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />-->
+
 
     <application
         android:allowBackup="true"
@@ -43,6 +48,32 @@
             android:label="@string/title_activity_sign_in"
             android:theme="@style/Theme.SpotifyWrap" />
         <activity
+            android:name=".SettingsActivity"
+            android:exported="false"
+            android:label="SettingsActivity"
+            android:theme="@style/Theme.SpotifyWrap" />
+        <activity
+            android:name=".ResetPassword"
+            android:exported="false"
+            android:label="ResetPassword"
+            android:theme="@style/Theme.SpotifyWrap" />
+        <activity
+            android:name=".DeleteAccount"
+            android:exported="false"
+            android:label="DeleteAccount"
+            android:theme="@style/Theme.SpotifyWrap" />
+        <activity
+            android:name=".connectSpotifySettings"
+            android:exported="false"
+            android:label="connectSpotifySettings"
+            android:theme="@style/Theme.SpotifyWrap" />
+        <activity
+            android:name=".connectSpotifyRegister"
+            android:exported="false"
+            android:label="connectSpotifyRegister"
+            android:theme="@style/Theme.SpotifyWrap" />
+
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
@@ -53,20 +84,30 @@
                 <!-- <data android:host="@string/host_name" android:scheme="@string/scheme_name"/> -->
 
             </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-                <data android:host="auth" android:scheme="spotifywrap"/>
-            </intent-filter>
-<!--            IF APP DOES NOT WORK REPLACE INTENT-FILTER WITH VERSION BELOW-->
 <!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-
+<!--                <action android:name="android.intent.action.VIEW"/>-->
+<!--                <category android:name="android.intent.category.DEFAULT"/>-->
+<!--                <category android:name="android.intent.category.BROWSABLE"/>-->
 <!--                <data android:host="auth" android:scheme="spotifywrap"/>-->
 <!--            </intent-filter>-->
+<!--            IF APP DOES NOT WORK REPLACE INTENT-FILTER WITH VERSION BELOW-->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+
+                <data android:host="auth" android:scheme="spotifywrap"/>
+            </intent-filter>
+
+        </activity>
+        <activity
+            android:name=".WrapHistoryActivity"
+            android:exported="false"
+            android:label="past-wraps"
+            android:theme="@style/Theme.SpotifyWrap" />
+        <activity
+            android:name=".playsong"
+            android:exported = "true">
 
         </activity>
     </application>
