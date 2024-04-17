@@ -83,6 +83,7 @@ public class connectSpotifyRegister extends AppCompatActivity {
                 CollectionReference colRef = db.collection("wraplify");
                 Map<String, Object> docData = new HashMap<>();
                 docData.put("spotifyId", mAccessToken);
+                docData.put("username", user.getEmail());
 
                 colRef.document(UID).set(docData);
 

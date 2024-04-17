@@ -1,5 +1,6 @@
 package com.example.spotifywrap;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.content.Intent;
@@ -9,9 +10,15 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.Firebase;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Source;
 import com.spotify.sdk.android.auth.AuthorizationClient;
 import com.spotify.sdk.android.auth.AuthorizationRequest;
 import com.spotify.sdk.android.auth.AuthorizationResponse;
@@ -110,25 +117,59 @@ public class MainActivity extends AppCompatActivity {
 //        });
         btnLogOut = findViewById(R.id.btnLogout);
 
-        Intent intent = getIntent();
-        if (intent != null && intent.hasExtra("username")) {
-            username = intent.getStringExtra("username");
-            // Now 'variable' contains the value passed from SettingsActivity
-        }
-        if (intent != null && intent.hasExtra("token")) {
-            String temp = intent.getStringExtra("token");
-            if (temp != null) {
-                mAccessToken = temp;
-            }
-        }
+        // get username and mAccessToken from intent, currently replaced
+        // with getting username from firebaseauth and mAccessToken from firestore
+//        Intent intent = getIntent();
+//        if (intent != null && intent.hasExtra("username")) {
+//            username = intent.getStringExtra("username");
+//            // Now 'variable' contains the value passed from SettingsActivity
+//        }
+//        if (intent != null && intent.hasExtra("token")) {
+//            String temp = intent.getStringExtra("token");
+//            if (temp != null) {
+//                mAccessToken = temp;
+//            }
+//        }
+
+
         //
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
         if (username == null && user != null) {
             username = user.getEmail();
+            Log.d("ERROR", " logged in");
 
         }
+        else {
+            Log.d("ERROR", "not logged in");
+
+        }
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance(); // db of wrapped for each user
+        if (user != null) {
+            String UID = user.getUid(); // firebase user id
+            DocumentReference docRef = db.collection("wraplify").document(UID);
+            Source source = Source.CACHE;
+
+            // Get the document, forcing the SDK to use the offline cache
+            docRef.get(source).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        // Document found in the offline cache
+                        DocumentSnapshot document = task.getResult();
+                        mAccessToken = document.getData().get("spotifyId").toString();
+                        Log.d("INFO", "Cached document data: " + document.getData());
+                    } else {
+                        Log.d("ERROR", "Cached get failed: ", task.getException());
+                    }
+                }
+            });
+        }
+
+
         welcome.setText("Welcome to Wraplify, " + username);
+
 
         btnLogOut.setOnClickListener(view ->{
             mAuth.signOut();
