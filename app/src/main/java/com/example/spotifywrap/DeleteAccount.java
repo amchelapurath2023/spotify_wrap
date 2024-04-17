@@ -3,6 +3,7 @@ package com.example.spotifywrap;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -10,9 +11,13 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class DeleteAccount extends AppCompatActivity {
 
@@ -68,6 +73,24 @@ public class DeleteAccount extends AppCompatActivity {
                             } else {
                                 Toast.makeText(DeleteAccount.this, "Failed to delete user account.", Toast.LENGTH_SHORT).show();
                             }
+                        }
+                    });
+
+            // delete data from firestore
+            FirebaseFirestore db = FirebaseFirestore.getInstance(); // db of wrapped for each user
+            String UID = user.getUid(); // firebase user id
+            db.collection("wraplify").document(UID)
+                    .delete()
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Log.d("INFO", "DocumentSnapshot successfully deleted!");
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.w("ERROR", "Error deleting document", e);
                         }
                     });
         } else {
