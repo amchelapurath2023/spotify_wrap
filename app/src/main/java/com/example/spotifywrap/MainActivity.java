@@ -1,5 +1,6 @@
 package com.example.spotifywrap;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.content.Intent;
@@ -9,8 +10,15 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.Firebase;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Source;
 import com.spotify.sdk.android.auth.AuthorizationClient;
 import com.spotify.sdk.android.auth.AuthorizationRequest;
 import com.spotify.sdk.android.auth.AuthorizationResponse;
@@ -61,6 +69,9 @@ public class MainActivity extends AppCompatActivity {
     private StringBuilder formatDisplay = new StringBuilder();
 
     private String time;
+    private String username;
+
+
 
 
 
@@ -87,23 +98,78 @@ public class MainActivity extends AppCompatActivity {
 
 
         // Initialize the buttons
-        Button tokenBtn = (Button) findViewById(R.id.connect_btn);
+//        Button tokenBtn = (Button) findViewById(R.id.connect_btn);
 //        Button codeBtn = (Button) findViewById(R.id.code_btn);
         Button shortBtn = (Button) findViewById(R.id.timeframe_button_short);
         Button mediumBtn = (Button) findViewById(R.id.timeframe_button_medium);
         Button longBtn = (Button) findViewById(R.id.timeframe_button_long);
+        Button settings = (Button) findViewById(R.id.btnSettings);
+        TextView welcome = findViewById(R.id.textView);
 
         Button pastWrapsBtn = (Button) findViewById(R.id.past_wraps_button);
 
 
         // Set the click listeners for the buttons
 
-        tokenBtn.setOnClickListener((v) -> {
-            getToken();
-
-        });
+//        tokenBtn.setOnClickListener((v) -> {
+//            getToken();
+//
+//        });
         btnLogOut = findViewById(R.id.btnLogout);
+
+        // get username and mAccessToken from intent, currently replaced
+        // with getting username from firebaseauth and mAccessToken from firestore
+//        Intent intent = getIntent();
+//        if (intent != null && intent.hasExtra("username")) {
+//            username = intent.getStringExtra("username");
+//            // Now 'variable' contains the value passed from SettingsActivity
+//        }
+//        if (intent != null && intent.hasExtra("token")) {
+//            String temp = intent.getStringExtra("token");
+//            if (temp != null) {
+//                mAccessToken = temp;
+//            }
+//        }
+
+
+        //
         mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (username == null && user != null) {
+            username = user.getEmail();
+            Log.d("ERROR", " logged in");
+
+        }
+        else {
+            Log.d("ERROR", "not logged in");
+
+        }
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance(); // db of wrapped for each user
+        if (user != null) {
+            String UID = user.getUid(); // firebase user id
+            DocumentReference docRef = db.collection("wraplify").document(UID);
+            Source source = Source.CACHE;
+
+            // Get the document, forcing the SDK to use the offline cache
+            docRef.get(source).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        // Document found in the offline cache
+                        DocumentSnapshot document = task.getResult();
+                        mAccessToken = document.getData().get("spotifyId").toString();
+                        Log.d("INFO", "Cached document data: " + document.getData());
+                    } else {
+                        Log.d("ERROR", "Cached get failed: ", task.getException());
+                    }
+                }
+            });
+        }
+
+
+        welcome.setText("Welcome to Wraplify, " + username);
+
 
         btnLogOut.setOnClickListener(view ->{
             mAuth.signOut();
@@ -112,6 +178,11 @@ public class MainActivity extends AppCompatActivity {
 //        codeBtn.setOnClickListener((v) -> {
 //            getCode();
         });
+
+        settings.setOnClickListener(view ->{
+            startActivity(new Intent(MainActivity.this, SettingsActivity.class).putExtra("username", username).putExtra("token", mAccessToken));
+        });
+
 
         pastWrapsBtn.setOnClickListener(view -> {
             startActivity(new Intent(MainActivity.this, WrapHistoryActivity.class));
@@ -203,6 +274,7 @@ public class MainActivity extends AppCompatActivity {
         topArtists = new ArrayList<>();
         topSongs = new ArrayList<>();
         recArtists = new ArrayList<>();
+        topsongurl = new ArrayList<>();
 
 
         // Create a request to get the user profile
