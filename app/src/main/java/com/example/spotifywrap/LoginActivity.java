@@ -53,7 +53,7 @@ public class LoginActivity extends AppCompatActivity {
         });
 
     }
-
+//testing
     private void loginUser(){
         String email = etLoginEmail.getText().toString();
         String password = etLoginPassword.getText().toString();
