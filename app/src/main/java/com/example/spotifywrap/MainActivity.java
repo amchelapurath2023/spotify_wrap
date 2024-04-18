@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
         btnLogOut = findViewById(R.id.btnLogout);
 
         // get username and mAccessToken from intent, currently replaced
-        // with getting username from firebaseauth and mAccessToken from firestore
+        // with getting username and mAccessToken from firestore
 //        Intent intent = getIntent();
 //        if (intent != null && intent.hasExtra("username")) {
 //            username = intent.getStringExtra("username");
@@ -159,8 +159,13 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
+        else {
+            Log.d("ERROR", "not logged in");
+
+        }
 
 
+//        welcome.setText("Welcome to Wraplify, " + username);
 
 
 
