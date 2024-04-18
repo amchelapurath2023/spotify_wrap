@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
     <color name="teal_700">#00796B</color>
+    <color name="black">#171212</color>
+    <color name="white">#fdf7f7</color>
+    <color name="navy">#04395e</color>
+    <color name="gold">#dab785</color>
+    <color name="green">#70a288</color>
+    <color name="blue">#076AB0</color>
+    <color name="tan">#E7D1B1</color>
+    <color name="red">#d35269</color>
+    <color name="pink">#eaaeb9</color>
+    <color name="purple">#4a004a</color>
+    <color name="lightModeBacking">#FAF9F8</color>
 </resources>
