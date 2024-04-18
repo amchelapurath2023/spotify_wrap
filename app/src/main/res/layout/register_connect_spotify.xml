@@ -27,17 +27,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Connect your Wraplify with a Spotify account:"
-            android:textSize="30sp"
+            android:textSize="20sp"
             android:textStyle="bold"
             android:textColor="@color/teal_700"
             android:gravity="center_horizontal"
             android:layout_marginVertical="16dp"/>
-
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_height="wrap_content"/>
 
 
         <com.google.android.material.button.MaterialButton
@@ -46,6 +40,35 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:text="Connect with a Spotify account"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Create your account username:"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/teal_700"
+            android:gravity="center_horizontal"
+            android:layout_marginVertical="16dp"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etChangeUname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="new username"
+                android:inputType="textEmailAddress"/>
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnConfirm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Confirm your username"/>
 
         <LinearLayout
             android:layout_width="match_parent"

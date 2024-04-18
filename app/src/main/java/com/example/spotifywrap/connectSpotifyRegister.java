@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.content.Intent;
 import android.net.Uri;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,6 +40,8 @@ public class connectSpotifyRegister extends AppCompatActivity {
     String username;
     String email;
     private Button connect;
+    private Button confirm;
+    private TextView uname;
     private TextView back;
 
     private String token;
@@ -57,13 +60,15 @@ public class connectSpotifyRegister extends AppCompatActivity {
 
         connect = (Button) findViewById(R.id.btnConnect);
         back = (TextView) findViewById(R.id.tvBack);
+        confirm = findViewById(R.id.btnConfirm);
+        uname = findViewById(R.id.etChangeUname);
 
         FirebaseAuth mAuth;
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
         String UID = user.getUid(); // firebase user id
         FirebaseFirestore db = FirebaseFirestore.getInstance(); // db of wrapped for each user
-//        DocumentReference docRef = db.collection("wraplify").document(UID);
+        DocumentReference docRef = db.collection("wraplify").document(UID);
 
 
 
@@ -73,17 +78,34 @@ public class connectSpotifyRegister extends AppCompatActivity {
             getToken();
 
         });
+        confirm.setOnClickListener((v) -> {
+
+            // Get the text from the TextView
+            username = uname.getText().toString();
+            //Store username to firebase here
+            docRef.update("username", username);
+
+            // Check if the text is not empty
+            if (!username.isEmpty()) {
+
+                Toast.makeText(connectSpotifyRegister.this, "Username successfully updated!", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(connectSpotifyRegister.this, "Enter a new username", Toast.LENGTH_SHORT).show();
+            }
+
+
+        });
 
 
         back.setOnClickListener(view ->{
-            if (mAccessToken == null){
-                Toast.makeText(this, "You need to connect a Spotify account to finish setup.", Toast.LENGTH_SHORT).show();
+            if (mAccessToken == null || username == null){
+                Toast.makeText(this, "You need to connect a Spotify account and create an username to finish setup.", Toast.LENGTH_SHORT).show();
             } else {
                 // store mAccesstoken in firebase here
                 CollectionReference colRef = db.collection("wraplify");
                 Map<String, Object> docData = new HashMap<>();
                 docData.put("spotifyId", mAccessToken);
-                docData.put("username", user.getEmail());
+                docData.put("username", username);
 
                 colRef.document(UID).set(docData);
 

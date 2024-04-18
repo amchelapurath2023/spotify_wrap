@@ -135,15 +135,6 @@ public class MainActivity extends AppCompatActivity {
         //
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
-        if (username == null && user != null) {
-            username = user.getEmail();
-            Log.d("ERROR", " logged in");
-
-        }
-        else {
-            Log.d("ERROR", "not logged in");
-
-        }
 
         FirebaseFirestore db = FirebaseFirestore.getInstance(); // db of wrapped for each user
         if (user != null) {
@@ -159,6 +150,8 @@ public class MainActivity extends AppCompatActivity {
                         // Document found in the offline cache
                         DocumentSnapshot document = task.getResult();
                         mAccessToken = document.getData().get("spotifyId").toString();
+                        username = document.getData().get("username").toString();
+                        welcome.setText("Welcome to Wraplify, " + username);
                         Log.d("INFO", "Cached document data: " + document.getData());
                     } else {
                         Log.d("ERROR", "Cached get failed: ", task.getException());
@@ -168,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-        welcome.setText("Welcome to Wraplify, " + username);
+
 
 
         btnLogOut.setOnClickListener(view ->{
