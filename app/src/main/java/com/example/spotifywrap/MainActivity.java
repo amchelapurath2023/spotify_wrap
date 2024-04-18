@@ -1,5 +1,6 @@
 package com.example.spotifywrap;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.content.Intent;
@@ -9,8 +10,15 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.Firebase;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Source;
 import com.spotify.sdk.android.auth.AuthorizationClient;
 import com.spotify.sdk.android.auth.AuthorizationRequest;
 import com.spotify.sdk.android.auth.AuthorizationResponse;
@@ -47,6 +55,28 @@ public class MainActivity extends AppCompatActivity {
     private String recArtist;
     private ArrayList<String> favArtists = new ArrayList<>();
     private String var = "short";
+    private ArrayList<String> topsongurl = new ArrayList<>();
+
+
+
+    private ArrayList<String> userProfileArray = new ArrayList<>();
+    private ArrayList<ArrayList<String>> topArtists = new ArrayList<>();
+
+    private ArrayList<ArrayList<String>> topSongs = new ArrayList<>();
+
+    private ArrayList<ArrayList<String>> recArtists = new ArrayList<>();
+
+    private StringBuilder formatDisplay = new StringBuilder();
+
+    private String time;
+    private String username;
+
+
+
+
+
+
+
 
     Button btnLogOut;
     FirebaseAuth mAuth;
@@ -61,29 +91,82 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Initialize the views
+
 //        tokenTextView = (TextView) findViewById(R.id.token_text_view);
 //        codeTextView = (TextView) findViewById(R.id.code_text_view);
-        profileTextView = (TextView) findViewById(R.id.profile_text_view);
-        artistTextView = (TextView) findViewById(R.id.artist_text_view);
-        trackTextView = (TextView) findViewById(R.id.track_text_view);
-        relatedTextView = (TextView) findViewById(R.id.related_text_view);
+
 
 
         // Initialize the buttons
-        Button tokenBtn = (Button) findViewById(R.id.connect_btn);
+//        Button tokenBtn = (Button) findViewById(R.id.connect_btn);
 //        Button codeBtn = (Button) findViewById(R.id.code_btn);
         Button shortBtn = (Button) findViewById(R.id.timeframe_button_short);
         Button mediumBtn = (Button) findViewById(R.id.timeframe_button_medium);
         Button longBtn = (Button) findViewById(R.id.timeframe_button_long);
+        Button settings = (Button) findViewById(R.id.btnSettings);
+        TextView welcome = findViewById(R.id.textView);
+
+        Button pastWrapsBtn = (Button) findViewById(R.id.past_wraps_button);
+
 
         // Set the click listeners for the buttons
 
-        tokenBtn.setOnClickListener((v) -> {
-            getToken();
-
-        });
+//        tokenBtn.setOnClickListener((v) -> {
+//            getToken();
+//
+//        });
         btnLogOut = findViewById(R.id.btnLogout);
+
+        // get username and mAccessToken from intent, currently replaced
+        // with getting username and mAccessToken from firestore
+//        Intent intent = getIntent();
+//        if (intent != null && intent.hasExtra("username")) {
+//            username = intent.getStringExtra("username");
+//            // Now 'variable' contains the value passed from SettingsActivity
+//        }
+//        if (intent != null && intent.hasExtra("token")) {
+//            String temp = intent.getStringExtra("token");
+//            if (temp != null) {
+//                mAccessToken = temp;
+//            }
+//        }
+
+
+        //
         mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance(); // db of wrapped for each user
+        if (user != null) {
+            String UID = user.getUid(); // firebase user id
+            DocumentReference docRef = db.collection("wraplify").document(UID);
+            Source source = Source.CACHE;
+
+            // Get the document, forcing the SDK to use the offline cache
+            docRef.get(source).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        // Document found in the offline cache
+                        DocumentSnapshot document = task.getResult();
+                        mAccessToken = document.getData().get("spotifyId").toString();
+                        username = document.getData().get("username").toString();
+                        welcome.setText("Welcome to Wraplify, " + username);
+                        Log.d("INFO", "Cached document data: " + document.getData());
+                    } else {
+                        Log.d("ERROR", "Cached get failed: ", task.getException());
+                    }
+                }
+            });
+        }
+        else {
+            Log.d("ERROR", "not logged in");
+
+        }
+
+
+//        welcome.setText("Welcome to Wraplify, " + username);
+
 
         btnLogOut.setOnClickListener(view ->{
             mAuth.signOut();
@@ -93,20 +176,33 @@ public class MainActivity extends AppCompatActivity {
 //            getCode();
         });
 
+        settings.setOnClickListener(view ->{
+            startActivity(new Intent(MainActivity.this, SettingsActivity.class).putExtra("username", username).putExtra("token", mAccessToken));
+        });
+
+
+        pastWrapsBtn.setOnClickListener(view -> {
+            startActivity(new Intent(MainActivity.this, WrapHistoryActivity.class));
+        });
+
+
         shortBtn.setOnClickListener((v) -> {
             var = "short";
+            time = "month's";
             onGetUserProfileClicked();
-            Toast.makeText(this, "Last month's summary!", Toast.LENGTH_SHORT).show();
+
         });
         mediumBtn.setOnClickListener((v) -> {
             var = "medium";
+            time = "6 months'";
             onGetUserProfileClicked();
-            Toast.makeText(this, "Last 6 month's summary!", Toast.LENGTH_SHORT).show();
+
         });
         longBtn.setOnClickListener((v) -> {
             var = "long";
+            time = "several years'";
             onGetUserProfileClicked();
-            Toast.makeText(this, "Last several years' summary!", Toast.LENGTH_SHORT).show();
+
         });
 
     }
@@ -148,7 +244,7 @@ public class MainActivity extends AppCompatActivity {
         // Check which request code is present (if any)
         if (AUTH_TOKEN_REQUEST_CODE == requestCode) {
             mAccessToken = response.getAccessToken();
-            //setTextAsync(mAccessToken, tokenTextView);
+//            setTextAsync(mAccessToken, tokenTextView);
 
         } else if (AUTH_CODE_REQUEST_CODE == requestCode) {
             mAccessCode = response.getCode();
@@ -163,9 +259,20 @@ public class MainActivity extends AppCompatActivity {
      */
     public void onGetUserProfileClicked() {
         if (mAccessToken == null) {
-            Toast.makeText(this, "You need to get an access token first!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "You need to connect with Spotify first!", Toast.LENGTH_SHORT).show();
             return;
         }
+        Toast.makeText(this, "Last " + time + " summary!", Toast.LENGTH_SHORT).show();
+
+        //Create a new string for the summary
+        formatDisplay = new StringBuilder();
+        //create new data arrays for the summary
+        userProfileArray = new ArrayList<>();
+        topArtists = new ArrayList<>();
+        topSongs = new ArrayList<>();
+        recArtists = new ArrayList<>();
+        topsongurl = new ArrayList<>();
+
 
         // Create a request to get the user profile
         final Request requestProfile = new Request.Builder()
@@ -213,7 +320,15 @@ public class MainActivity extends AppCompatActivity {
                     userInfo.append("Spotify URL: ").append(userProfile.getString("external_urls")).append("\n\n");
 
 
-                    setTextAsync(userInfo.toString(), profileTextView);
+                    // Array for extracting data
+                    userProfileArray.add(userProfile.getString("display_name"));
+                    userProfileArray.add(userProfile.getString("email"));
+                    userProfileArray.add(imageUrl);
+                    userProfileArray.add(userProfile.getString("external_urls"));
+
+
+                    //add formatted info to display string
+                    formatDisplay.append(userInfo);
                     getTopArtists(requestArtist);
 
 
@@ -272,6 +387,7 @@ public class MainActivity extends AppCompatActivity {
 
                     for (int i = 0; i < Math.min(itemsArray.length(), 10); i++) {
                         JSONObject artistObject = itemsArray.getJSONObject(i);
+                        ArrayList <String> artistArray = new ArrayList<>();
                         String artistName = artistObject.getString("name");
 
                         //get top artist id
@@ -296,16 +412,24 @@ public class MainActivity extends AppCompatActivity {
 
                         // Append artist,images and genres to the StringBuilder
                         artistInfo.append("Artist: ").append(artistName).append("\n");
+                        artistArray.add(artistName);
                         if(genres.length() == 0) {
                             artistInfo.append("Genres: Not Available ").append("\n");
+                            artistArray.add("Genre Not Available");
                         } else{
                             artistInfo.append("Genres: ").append(genres).append("\n");
+                            artistArray.add(genres.toString());
                         }
                         artistInfo.append("Image URL: " + "\n").append(imageUrl).append("\n\n");
+                        artistArray.add(imageUrl);
+
+                        // array for extracting data
+                        topArtists.add(artistArray);
                     }
 
-                    // Update the UI with the fetched artist information
-                    setTextAsync(artistInfo.toString(), artistTextView);
+                    //add formatted info to display string
+                    formatDisplay.append(artistInfo);
+
                     getTopTracks(requestTrack);
                 } catch (JSONException e) {
                     Log.d("JSON", "Failed to parse data: " + e);
@@ -346,11 +470,14 @@ public class MainActivity extends AppCompatActivity {
                     JSONObject jsonObject = new JSONObject(responseData);
                     JSONArray items = jsonObject.getJSONArray("items");
 
+
                     // StringBuilder to store the artists and songs
                     StringBuilder trackInfo = new StringBuilder();
                     trackInfo.append("YOUR TOP 10 SONGS: " + "\n\n\n");
                     for (int i = 0; i < Math.min(items.length(), 10); i++) {
                         JSONObject track = items.getJSONObject(i);
+
+                        ArrayList<String> songArray = new ArrayList<>();
 
                         // Extracting track details
                         String trackName = track.getString("name");
@@ -371,16 +498,28 @@ public class MainActivity extends AppCompatActivity {
                                 .getString("url");
 
                         String previewUrl = track.getString("preview_url");
+                        topsongurl.add(previewUrl);
+
 
                         // Append artist,images, name, preview to the StringBuilder
                         trackInfo.append("Song Name: ").append(trackName).append("\n");
                         trackInfo.append("Artist(s): ").append(artists).append("\n");
                         trackInfo.append("Image URL: " + "\n").append(coverImage).append("\n");
                         trackInfo.append("Song preview: " + "\n").append(previewUrl).append("\n\n");
+
+                        songArray.add(trackName);
+                        songArray.add(artists.toString());
+                        songArray.add(coverImage);
+                        songArray.add(previewUrl);
+
+                        //add to array for extracting data
+                        topSongs.add(songArray);
+
+
                     }
 
-                    // Update the UI with the fetched artist information
-                    setTextAsync(trackInfo.toString(), trackTextView);
+                    //add formatted info to display string
+                    formatDisplay.append(trackInfo);
                     getRelatedArtists(requestRelArtists);
 
                 } catch (JSONException e) {
@@ -392,8 +531,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void getRelatedArtists(Request request) {
-
+    public void getRelatedArtists(Request request) throws JSONException {
 
         cancelCall();
         mCall = mOkHttpClient.newCall(request);
@@ -450,20 +588,49 @@ public class MainActivity extends AppCompatActivity {
 
                         // Append artist,images and genres to the StringBuilder if not already a top artist and is picked
                         if(!favArtists.contains(artistId) && pick.contains(i)) {
+                            ArrayList<String> recArray = new ArrayList<>();
                             relatedInfo.append("Recommended Artist: ").append(artistName).append("\n");
+                            recArray.add(artistName);
                             if(genres.length() == 0) {
                                 relatedInfo.append("Genres: Not Available ").append("\n");
+                                recArray.add("Genres: Not Available");
                             } else{
                                 relatedInfo.append("Genres: ").append(genres).append("\n");
+                                recArray.add(genres.toString());
                             }
                             relatedInfo.append("Image URL: " + "\n").append(imageUrl).append("\n\n");
+                            recArray.add(imageUrl);
+
+
+                            recArtists.add(recArray);
 
                         }
                     }
 
-                    // Update the UI with the fetched artist information
-                    setTextAsync(relatedInfo.toString(), relatedTextView);
+                    // add formatted info to display string
+                    formatDisplay.append(relatedInfo);
                     favArtists = new ArrayList<>();
+
+
+
+                    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                    // this part creates the intent and passes in the data
+                    // Top song urls is an array containing the urls of the top songs for song playback
+                    // userProfile is an arraylist containing the user info in an array form.
+                    // topArtists, topSongs, recArtists are arraylists of arraylists.
+                    // Basically, each nested arraylist is an artist/song.
+                    // The proper indices to access whatever things u need inside the arrays can be found on our meeting docs under the notes for 4/7/24.
+                    //The formatDisplay is a placeholder display so that the info from userProfile, topArtists, topSongs, recArtists is readable.
+
+                    Intent intent = new Intent(MainActivity.this, playsong.class);
+                    intent.putStringArrayListExtra("topsongurls", topsongurl);
+                    intent.putStringArrayListExtra("userProfile", userProfileArray);
+                    intent.putExtra("topArtists",topArtists );
+                    intent.putExtra("topSongs", topSongs);
+                    intent.putExtra("recArtists", recArtists);
+                    intent.putExtra("formatDisplay", formatDisplay.toString());
+                    startActivity(intent);
+                    // ----------------------------
                 } catch (JSONException e) {
                     Log.d("JSON", "Failed to parse data: " + e);
                     Toast.makeText(MainActivity.this, "Failed to parse data, watch Logcat for more details",
@@ -472,6 +639,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+
 
 
 
@@ -495,7 +664,7 @@ public class MainActivity extends AppCompatActivity {
     private AuthorizationRequest getAuthenticationRequest(AuthorizationResponse.Type type) {
         return new AuthorizationRequest.Builder(CLIENT_ID, type, getRedirectUri().toString())
                 .setShowDialog(false)
-                .setScopes(new String[] { "user-read-email", "user-top-read" }) // <--- Change the scope of your requested token here
+                .setScopes(new String[] { "user-read-email", "user-top-read", "user-modify-playback-state"}) // <--- Change the scope of your requested token here
                 .setCampaign("your-campaign-token")
                 .build();
     }
