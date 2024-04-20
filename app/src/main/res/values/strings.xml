@@ -72,4 +72,5 @@
     <string name="top_artist_five">5.</string>
     <string name="top_artist_four">4.</string>
     <string name="title_activity_songs">Songs</string>
+    <string name="title_activity_top_artists">topArtists</string>
 </resources>
