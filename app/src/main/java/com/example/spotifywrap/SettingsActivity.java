@@ -34,7 +34,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     Button reset;
     Button delete;
-    Button back;
+    TextView back;
     Button change;
     Button connect;
 
@@ -68,7 +68,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         reset = findViewById(R.id.ResetPw);
         delete = findViewById(R.id.Delete);
-        back = findViewById(R.id.backButton);
+        back = findViewById(R.id.tvBack);
         change = findViewById(R.id.btnChangeUserName);
         newusername = findViewById(R.id.etResetEmail);
         curemail = findViewById(R.id.email);
@@ -87,8 +87,8 @@ public class SettingsActivity extends AppCompatActivity {
             }
         }
 
-        curusername.setText("Your Account Username: " + username);
-        curemail.setText("Your Account Email: " + email);
+        curusername.setText("Your Account's Username: " + username);
+        curemail.setText("Your Account's Email: " + email);
 
 
 
@@ -97,14 +97,14 @@ public class SettingsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // Get the text from the TextView
                 username = newusername.getText().toString();
-                //Store username to firebase here
-                docRef.update("username", username);
 
                 // Check if the text is not empty
                 if (!username.isEmpty()) {
+                    //Store username to Firebase if not empty
+                    docRef.update("username", username);
                     // Clear the TextView
                     newusername.setText("");
-                    curusername.setText("Your Account Username: " + username);
+                    curusername.setText("Your Account's Username: " + username);
 
                     Toast.makeText(SettingsActivity.this, "Username successfully updated!", Toast.LENGTH_SHORT).show();
                 } else {
