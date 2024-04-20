@@ -1,73 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayout3"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="24dp"
+    android:background="@drawable/bg_login"
     tools:context=".LoginActivity">
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="25dp"
-        android:src="@drawable/spotify_logo_with_text"/>
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:alpha="0.6"
+        android:fontFamily="@font/urbanist_bold"
+        android:text="wraplify"
+        android:backgroundTintMode="screen"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:id="@+id/linearLayout4"
+        android:layout_width="363dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_gravity="center"
-        android:layout_marginTop="25dp">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textView8">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Login"
-            android:textSize="30sp"
-            android:textStyle="bold"
-            android:textColor="@color/teal_700"
+            android:layout_marginVertical="16dp"
+            android:fontFamily="@font/urbanist_regular"
             android:gravity="center_horizontal"
-            android:layout_marginVertical="16dp"/>
+            android:text="Login"
+            android:textColor="@color/white"
+            android:textSize="30sp"
+            android:textStyle="bold" />
 
 
         <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_height="wrap_content">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/white"
+            app:boxStrokeColor="@color/blue"
+            app:boxStrokeErrorColor="@color/white"
+            app:placeholderTextColor="@color/white"
+            app:hintTextColor="@color/white"
+            app:cursorColor="@color/white"
+            >
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etLoginEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:fontFamily="@font/urbanist_regular"
                 android:hint="Email"
-                android:inputType="textEmailAddress"/>
+                android:inputType="textEmailAddress" />
         </com.google.android.material.textfield.TextInputLayout>
 
 
         <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp">
+            android:layout_marginTop="12dp"
+            android:textColorHint="@color/white"
+            app:boxStrokeColor="@color/blue"
+            app:boxStrokeErrorColor="@color/white"
+            app:placeholderTextColor="@color/white"
+            app:hintTextColor="@color/white"
+            app:cursorColor="@color/white">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etLoginPass"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:fontFamily="@font/urbanist_regular"
                 android:hint="Password"
-                android:inputType="textPassword"/>
+                android:inputType="textPassword" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnLogin"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginTop="24dp"
-            android:text="Login"/>
+            android:backgroundTint="@color/blue"
+            android:fontFamily="@font/urbanist_bold"
+            android:text="Login" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -79,18 +109,21 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Not registered yet"
-                android:textSize="16sp"/>
+                android:fontFamily="@font/urbanist_regular"
+                android:text="Not registered yet?"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/tvRegisterHere"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
+                android:fontFamily="@font/urbanist_bold"
                 android:text="Register here"
-                android:textColor="@color/teal_700"
-                android:textStyle="bold"
-                android:textSize="20sp"/>
+                android:textColor="@color/red"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
 
         </LinearLayout>
@@ -105,20 +138,23 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/urbanist_regular"
                 android:text="Forgot Password"
-                android:textSize="16sp"/>
+                android:textColor="@color/white"
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/tvResetPassword"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
+                android:fontFamily="@font/urbanist_bold"
                 android:text="Reset Password"
-                android:textColor="@color/teal_700"
-                android:textStyle="bold"
-                android:textSize="20sp"/>
+                android:textColor="@color/blue"
+                android:textSize="20sp"
+                android:textStyle="bold" />
         </LinearLayout>
 
     </LinearLayout>
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
