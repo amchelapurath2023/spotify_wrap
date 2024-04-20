@@ -108,7 +108,7 @@ public class SettingsActivity extends AppCompatActivity {
 
                     Toast.makeText(SettingsActivity.this, "Username successfully updated!", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(SettingsActivity.this, "Enter a new username", Toast.LENGTH_SHORT).show();
+                    newusername.setError("Enter an username");
                 }
             }
         });
