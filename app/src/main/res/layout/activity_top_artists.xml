@@ -7,15 +7,15 @@
         android:id="@+id/textViewTopSongs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Top Songs"
+        android:text="Top Artists"
+        android:gravity="right"
         android:textColor="@color/gold"
         android:textSize="36sp"
         android:textStyle="bold"
         android:padding="16dp" />
 
 
-
-    <!-- Song 1 -->
+    <!-- Artist 1 -->
     <RelativeLayout
         android:id="@+id/containerSong1"
         android:layout_width="match_parent"
@@ -30,35 +30,29 @@
             android:layout_width="90dp"
             android:layout_height="90dp"
             android:src="@color/black"
+            android:layout_marginRight="16dp"
             android:scaleType="centerCrop"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentEnd="true" />
 
         <TextView
             android:id="@+id/textViewSong1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/imageViewSong1"
-            android:layout_marginStart="16dp"
-            android:text="Song 1"
+            android:layout_toStartOf="@id/imageViewSong1"
+            android:layout_alignTop="@id/imageViewSong1"
+            android:layout_alignBottom="@id/imageViewSong1"
+            android:layout_marginEnd="16dp"
+            android:gravity="center_vertical"
+            android:text="Artist 1"
             android:textColor="@color/white"
             android:textSize="18sp"
             android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/textViewArtist1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:layout_below="@id/textViewSong1"
-            android:layout_toEndOf="@id/imageViewSong1"
-            android:layout_marginStart="16dp"
-            android:text="Artist 1"
-            android:textSize="14sp" />
 
     </RelativeLayout>
 
     <View
-        android:id="@+id/divider2"
+        android:id="@+id/divider1"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@id/containerSong1"
@@ -68,12 +62,12 @@
         android:layout_marginTop="0dp"
         android:layout_marginBottom="0dp" />
 
-    <!-- Song 2 -->
+    <!-- Artist 2 -->
     <RelativeLayout
         android:id="@+id/containerSong2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/divider2"
+        android:layout_below="@id/divider1"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp">
@@ -83,35 +77,29 @@
             android:layout_width="90dp"
             android:layout_height="90dp"
             android:src="@color/black"
+            android:layout_marginRight="16dp"
             android:scaleType="centerCrop"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentEnd="true" />
 
         <TextView
             android:id="@+id/textViewSong2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_toStartOf="@id/imageViewSong2"
+            android:layout_alignTop="@id/imageViewSong2"
+            android:layout_alignBottom="@id/imageViewSong2"
+            android:layout_marginEnd="16dp"
+            android:gravity="center_vertical"
+            android:text="Artist 2"
             android:textColor="@color/white"
-            android:layout_toEndOf="@id/imageViewSong2"
-            android:layout_marginStart="16dp"
-            android:text="Song 2"
             android:textSize="18sp"
             android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/textViewArtist2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:layout_below="@id/textViewSong2"
-            android:layout_toEndOf="@id/imageViewSong2"
-            android:layout_marginStart="16dp"
-            android:text="Artist 2"
-            android:textSize="14sp" />
 
     </RelativeLayout>
 
     <View
-        android:id="@+id/divider3"
+        android:id="@+id/divider2"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@id/containerSong2"
@@ -121,12 +109,11 @@
         android:layout_marginTop="0dp"
         android:layout_marginBottom="0dp" />
 
-    <!-- Song 3 -->
     <RelativeLayout
         android:id="@+id/containerSong3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/divider3"
+        android:layout_below="@id/divider2"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp">
@@ -136,35 +123,28 @@
             android:layout_width="90dp"
             android:layout_height="90dp"
             android:src="@color/black"
+            android:layout_marginRight="16dp"
             android:scaleType="centerCrop"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentEnd="true" />
 
         <TextView
             android:id="@+id/textViewSong3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/imageViewSong3"
-            android:layout_marginStart="16dp"
-            android:text="Song 3"
+            android:layout_toStartOf="@id/imageViewSong3"
+            android:layout_alignTop="@id/imageViewSong3"
+            android:layout_alignBottom="@id/imageViewSong3"
+            android:layout_marginEnd="16dp"
+            android:gravity="center_vertical"
+            android:text="Artist 3"
             android:textColor="@color/white"
             android:textSize="18sp"
             android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/textViewArtist3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:layout_below="@id/textViewSong3"
-            android:layout_toEndOf="@id/imageViewSong3"
-            android:layout_marginStart="16dp"
-            android:text="Artist 3"
-            android:textSize="14sp" />
-
     </RelativeLayout>
 
     <View
-        android:id="@+id/divider4"
+        android:id="@+id/divider3"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@id/containerSong3"
@@ -174,13 +154,11 @@
         android:layout_marginTop="0dp"
         android:layout_marginBottom="0dp" />
 
-
-    <!-- Song 4 -->
     <RelativeLayout
         android:id="@+id/containerSong4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/divider4"
+        android:layout_below="@id/divider3"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp">
@@ -190,35 +168,33 @@
             android:layout_width="90dp"
             android:layout_height="90dp"
             android:src="@color/black"
+            android:layout_marginRight="16dp"
             android:scaleType="centerCrop"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentEnd="true" />
 
         <TextView
             android:id="@+id/textViewSong4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/imageViewSong4"
-            android:layout_marginStart="16dp"
-            android:text="Song 4"
+            android:layout_toStartOf="@id/imageViewSong4"
+            android:layout_alignTop="@id/imageViewSong4"
+            android:layout_alignBottom="@id/imageViewSong4"
+            android:layout_marginEnd="16dp"
+            android:gravity="center_vertical"
+            android:text="Artist 4"
             android:textColor="@color/white"
             android:textSize="18sp"
             android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/textViewArtist4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:layout_below="@id/textViewSong4"
-            android:layout_toEndOf="@id/imageViewSong4"
-            android:layout_marginStart="16dp"
-            android:text="Artist 4"
-            android:textSize="14sp" />
-
     </RelativeLayout>
 
+
+
+
+
+
     <View
-        android:id="@+id/divider5"
+        android:id="@+id/divider4"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@id/containerSong4"
@@ -228,12 +204,11 @@
         android:layout_marginTop="0dp"
         android:layout_marginBottom="0dp" />
 
-    <!-- Song 5 -->
     <RelativeLayout
         android:id="@+id/containerSong5"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/divider5"
+        android:layout_below="@id/divider4"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp">
@@ -243,43 +218,32 @@
             android:layout_width="90dp"
             android:layout_height="90dp"
             android:src="@color/black"
+            android:layout_marginRight="16dp"
             android:scaleType="centerCrop"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentEnd="true" />
 
         <TextView
             android:id="@+id/textViewSong5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_toStartOf="@id/imageViewSong5"
+            android:layout_alignTop="@id/imageViewSong5"
+            android:layout_alignBottom="@id/imageViewSong5"
+            android:layout_marginEnd="16dp"
+            android:gravity="center_vertical"
+            android:text="Artist 5"
             android:textColor="@color/white"
-            android:layout_toEndOf="@id/imageViewSong5"
-            android:layout_marginStart="16dp"
-            android:text="Song 5"
             android:textSize="18sp"
             android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/textViewArtist5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:layout_below="@id/textViewSong5"
-            android:layout_toEndOf="@id/imageViewSong5"
-            android:layout_marginStart="16dp"
-            android:text="Artist 5"
-            android:textSize="14sp" />
-
     </RelativeLayout>
 
-    <View
-        android:id="@+id/divider6"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@id/containerSong5"
-        android:background="@android:color/white"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="0dp"
-        android:layout_marginBottom="0dp" />
+
+
+
+
+    <!-- Repeat the above pattern for other songs -->
+
     <Button
         android:id="@+id/button"
         android:layout_width="wrap_content"
@@ -291,4 +255,3 @@
 
 
 </RelativeLayout>
-
