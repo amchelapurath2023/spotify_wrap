@@ -73,4 +73,6 @@
     <string name="top_artist_four">4.</string>
     <string name="title_activity_songs">Songs</string>
     <string name="title_activity_top_artists">topArtists</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
