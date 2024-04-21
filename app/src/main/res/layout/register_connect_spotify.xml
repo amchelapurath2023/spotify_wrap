@@ -9,26 +9,24 @@
     android:background="@drawable/bg_login"
     tools:context=".ForgotPasswordActivity">
 
-    <TextView
-        android:id="@+id/textView8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:alpha="0.6"
-        android:backgroundTintMode="screen"
-        android:fontFamily="@font/urbanist_bold"
-        android:text="wraplify"
-        android:textColor="@color/white"
+    <ImageView
+        android:id="@+id/wraplifyLogo"
+        android:layout_width="268dp"
+        android:layout_height="62dp"
         android:layout_gravity="center"
-        android:textSize="24sp"
-        />
+        android:src="@drawable/wraplify_logo_trans"
+        app:layout_constraintBottom_toTopOf="@id/linearLayout4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_height="132dp"
         android:layout_gravity="center"
-        android:layout_marginTop="0dp"
-        android:src="@drawable/spotify_logo_with_text"/>
+        android:layout_marginTop="60dp"
+        android:src="@drawable/spotify_logo_with_text" />
 
     <LinearLayout
         android:layout_width="wrap_content"
