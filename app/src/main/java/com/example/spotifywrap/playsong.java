@@ -10,15 +10,33 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.NonNull;
 
+import androidx.appcompat.app.AppCompatActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Stack;
 import java.util.Arrays;
 
 public class playsong extends AppCompatActivity {
@@ -30,8 +48,12 @@ public class playsong extends AppCompatActivity {
     private int currentTrackIndex = 0;
     ArrayList<String> topsongurls;
 
+    private Map<String, Object> summaries = new HashMap<>(); // local copy of wrapped summaries to upload
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.wrapped_final);
 
@@ -58,6 +80,49 @@ public class playsong extends AppCompatActivity {
         TextView songThreeTextView = findViewById(R.id.top_song_three);
         TextView songFourTextView = findViewById(R.id.top_song_four);
         TextView songFiveTextView = findViewById(R.id.top_song_five);
+
+
+        // Saving summary to firestore !!!
+        FirebaseAuth mAuth;
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+        String UID = user.getUid(); // user id
+        FirebaseFirestore db = FirebaseFirestore.getInstance(); // db of wrapped for each user
+        CollectionReference colRef = db.collection("wraplify").document(UID).collection("wrap-summaries"); // existing collection for a specific user's summaries
+
+        Map<String, Object> docData = new HashMap<>();
+        ArrayList<String> topSongTitles = new ArrayList<String>();
+        for (int j = 0; j < topSongs.size(); j++) {
+            topSongTitles.add(topSongs.get(j).get(0));
+        }
+        ArrayList<String> topArtistNames = new ArrayList<String>();
+        for (int j = 0; j < topArtists.size(); j++) {
+            topArtistNames.add(topArtists.get(j).get(0));
+        }
+
+        docData.put("topSongs", topSongTitles);
+        docData.put("topArtists", topArtistNames);
+        SimpleDateFormat sdf = new SimpleDateFormat("'Date\n'dd-MM-yyyy '\n\nand\n\nTime\n'HH:mm:ss z");
+        String currentDateAndTime = sdf.format(new Date());
+        String summaryId = "summary" + currentDateAndTime;
+
+        colRef.document(summaryId)
+            .set(docData)
+            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Log.d("INFO", "DocumentSnapshot successfully written!");
+                }
+            })
+            .addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.w("ERROR", "Error writing document", e);
+                }
+            });
+
+
+
 
         // Load profile picture into ImageView using Picasso
         String imageUrl = topSongs.get(0).get(2); // Assuming the first element is the image URL
@@ -163,6 +228,10 @@ public class playsong extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
         releaseMediaPlayer();
     }
 }

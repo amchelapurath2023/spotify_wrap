@@ -18,6 +18,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.ArrayList;
+
 public class WrapHistoryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,12 +48,33 @@ public class WrapHistoryActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
+                                Button xmlButton = findViewById(R.id.btnLogin);
                                 Button summaryBtn = new Button(WrapHistoryActivity.this);
+                                summaryBtn.setLayoutParams(xmlButton.getLayoutParams());
+                                summaryBtn.setBackground(xmlButton.getBackground());
+//                                summaryBtn.setBackgroundResource(R.drawable.past_wrap_button);
+//                                summaryBtn.setBackgroundColor(summaryBtn.getContext().getResources().getColor(R.color.pink));
+//                                summaryBtn.set
+//                                summaryBtn.setBackground(summaryBtn.getContext().getResources().getAssets(R.id.btnLogin));
+//                                summaryBtn.set
                                 String wrapDate = document.getId();
                                 wrapDate += "\n\n";
-                                summaryBtn.setText(wrapDate);
-                                String wrapArtists = document.getData().get("topArtists").toString();
-                                String wrapSongs = document.getData().get("topSongs").toString();
+//                                summaryBtn.setText(wrapDate);
+                                StringBuilder pastWrap = new StringBuilder();
+                                pastWrap.append(wrapDate);
+                                pastWrap.append("TOP ARTISTS").append("\n\n");
+                                ArrayList<String> wrapArtists = (ArrayList<String>) document.getData().get("topArtists");
+                                for (int i = 0; i < wrapArtists.size(); i++){
+                                    pastWrap.append(wrapArtists.get(i)).append("\n");
+                                }
+                                pastWrap.append("\n");
+                                pastWrap.append("TOP SONGS").append("\n\n");
+                                ArrayList<String> wrapSongs = (ArrayList<String>) document.getData().get("topSongs");
+                                for (int i = 0; i < wrapSongs.size(); i++){
+                                    pastWrap.append(wrapSongs.get(i)).append("\n");
+                                }
+                                summaryBtn.setText(pastWrap);
+
 
                                 wrapsLayout.addView(summaryBtn);
                                 Log.d("INFO", document.getId() + " => " + document.getData());
