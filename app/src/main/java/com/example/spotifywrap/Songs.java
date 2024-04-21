@@ -84,9 +84,10 @@ public class Songs extends AppCompatActivity implements TopSongsFragment.OnGoToT
 
         docData.put("topSongs", topSongTitles);
         docData.put("topArtists", topArtistNames);
-        SimpleDateFormat sdf = new SimpleDateFormat("'Date\n'dd-MM-yyyy '\n\nand\n\nTime\n'HH:mm:ss z");
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'\n'HH:mm:ss z");
         String currentDateAndTime = sdf.format(new Date());
-        String summaryId = "summary" + currentDateAndTime;
+        String summaryId = currentDateAndTime;
 
         colRef.document(summaryId)
                 .set(docData)

@@ -60,17 +60,18 @@ public class WrapHistoryActivity extends AppCompatActivity {
 //                                summaryBtn.setBackground(summaryBtn.getContext().getResources().getAssets(R.id.btnLogin));
 //                                summaryBtn.set
                                 String wrapDate = document.getId();
-                                wrapDate += "\n\n";
 //                                summaryBtn.setText(wrapDate);
                                 StringBuilder pastWrap = new StringBuilder();
+                                pastWrap.append("\n");
                                 pastWrap.append(wrapDate);
-                                pastWrap.append("TOP ARTISTS").append("\n\n");
+                                pastWrap.append("\n-----\n\n");
+                                pastWrap.append("~TOP ARTISTS~").append("\n\n");
                                 ArrayList<String> wrapArtists = (ArrayList<String>) document.getData().get("topArtists");
                                 for (int i = 0; i < wrapArtists.size(); i++){
                                     pastWrap.append(wrapArtists.get(i)).append("\n");
                                 }
                                 pastWrap.append("\n");
-                                pastWrap.append("TOP SONGS").append("\n\n");
+                                pastWrap.append("~TOP SONGS~").append("\n\n");
                                 ArrayList<String> wrapSongs = (ArrayList<String>) document.getData().get("topSongs");
                                 for (int i = 0; i < wrapSongs.size(); i++){
                                     pastWrap.append(wrapSongs.get(i)).append("\n");
