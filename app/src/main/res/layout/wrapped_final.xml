@@ -152,18 +152,12 @@
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/wraplify_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="11dp"
-        android:fontFamily="@font/urbanist_bold"
-        android:text="wraplify"
-        android:alpha="0.5"
-        android:textColor="@color/white"
-        android:textSize="24sp"
-        android:textStyle="bold"
+    <ImageView
+        android:id="@+id/wraplifyLogo"
+        android:layout_width="112dp"
+        android:layout_height="73dp"
+        android:layout_gravity="center"
+        android:src="@drawable/wraplify_logo_trans"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
