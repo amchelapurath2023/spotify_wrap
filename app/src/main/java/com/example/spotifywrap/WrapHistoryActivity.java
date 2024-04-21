@@ -18,6 +18,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.ArrayList;
+
 public class WrapHistoryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,9 +60,20 @@ public class WrapHistoryActivity extends AppCompatActivity {
                                 String wrapDate = document.getId();
                                 wrapDate += "\n\n";
 //                                summaryBtn.setText(wrapDate);
-                                summaryBtn.setText(wrapDate);
-                                String wrapArtists = document.getData().get("topArtists").toString();
-                                String wrapSongs = document.getData().get("topSongs").toString();
+                                StringBuilder pastWrap = new StringBuilder();
+                                pastWrap.append(wrapDate);
+                                pastWrap.append("TOP ARTISTS").append("\n\n");
+                                ArrayList<String> wrapArtists = (ArrayList<String>) document.getData().get("topArtists");
+                                for (int i = 0; i < wrapArtists.size(); i++){
+                                    pastWrap.append(wrapArtists.get(i)).append("\n");
+                                }
+                                pastWrap.append("\n");
+                                pastWrap.append("TOP SONGS").append("\n\n");
+                                ArrayList<String> wrapSongs = (ArrayList<String>) document.getData().get("topSongs");
+                                for (int i = 0; i < wrapSongs.size(); i++){
+                                    pastWrap.append(wrapSongs.get(i)).append("\n");
+                                }
+                                summaryBtn.setText(pastWrap);
 
 
                                 wrapsLayout.addView(summaryBtn);

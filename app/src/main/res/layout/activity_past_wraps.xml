@@ -29,22 +29,32 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
-        android:id="@+id/wraps_linearlayout"
-        android:layout_width="409dp"
-        android:layout_height="653dp"
-        android:layout_marginTop="100dp"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnLogin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/back_button"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <LinearLayout
+            android:id="@+id/wraps_linearlayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="24dp"
-            android:backgroundTint="@color/blue"
-            android:fontFamily="@font/urbanist_bold"
-            android:text="Login" />
-    </LinearLayout>
+            android:orientation="vertical">
+
+            <!-- Your content here -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnLogin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="24dp"
+                android:backgroundTint="@color/blue"
+                android:fontFamily="@font/urbanist_bold"
+                android:text="Login" />
+
+            <!-- Add more content if needed -->
+
+        </LinearLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
