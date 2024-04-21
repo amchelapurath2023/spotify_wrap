@@ -260,8 +260,7 @@ public class MainActivity extends AppCompatActivity {
      */
     public void onGetUserProfileClicked() {
         if (mAccessToken == null) {
-            Toast.makeText(this, "You need to connect with Spotify first!", Toast.LENGTH_SHORT).show();
-            return;
+            Toast.makeText(this, "You need to reconnect with Spotify in settings", Toast.LENGTH_SHORT).show();
         }
         Toast.makeText(this, "Last " + time + " summary!", Toast.LENGTH_SHORT).show();
 
