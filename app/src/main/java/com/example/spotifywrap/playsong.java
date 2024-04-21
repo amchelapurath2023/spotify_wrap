@@ -82,46 +82,6 @@ public class playsong extends AppCompatActivity {
         TextView songFiveTextView = findViewById(R.id.top_song_five);
 
 
-        // Saving summary to firestore !!!
-        FirebaseAuth mAuth;
-        mAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = mAuth.getCurrentUser();
-        String UID = user.getUid(); // user id
-        FirebaseFirestore db = FirebaseFirestore.getInstance(); // db of wrapped for each user
-        CollectionReference colRef = db.collection("wraplify").document(UID).collection("wrap-summaries"); // existing collection for a specific user's summaries
-
-        Map<String, Object> docData = new HashMap<>();
-        ArrayList<String> topSongTitles = new ArrayList<String>();
-        for (int j = 0; j < topSongs.size(); j++) {
-            topSongTitles.add(topSongs.get(j).get(0));
-        }
-        ArrayList<String> topArtistNames = new ArrayList<String>();
-        for (int j = 0; j < topArtists.size(); j++) {
-            topArtistNames.add(topArtists.get(j).get(0));
-        }
-
-        docData.put("topSongs", topSongTitles);
-        docData.put("topArtists", topArtistNames);
-        SimpleDateFormat sdf = new SimpleDateFormat("'Date\n'dd-MM-yyyy '\n\nand\n\nTime\n'HH:mm:ss z");
-        String currentDateAndTime = sdf.format(new Date());
-        String summaryId = "summary" + currentDateAndTime;
-
-        colRef.document(summaryId)
-            .set(docData)
-            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void aVoid) {
-                    Log.d("INFO", "DocumentSnapshot successfully written!");
-                }
-            })
-            .addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Log.w("ERROR", "Error writing document", e);
-                }
-            });
-
-
 
 
         // Load profile picture into ImageView using Picasso
@@ -141,6 +101,49 @@ public class playsong extends AppCompatActivity {
 
         // Set click listener for go back button
         goBack.setOnClickListener(view -> {
+
+            // Saving summary to firestore !!!
+            FirebaseAuth mAuth;
+            mAuth = FirebaseAuth.getInstance();
+            FirebaseUser user = mAuth.getCurrentUser();
+            String UID = user.getUid(); // user id
+            FirebaseFirestore db = FirebaseFirestore.getInstance(); // db of wrapped for each user
+            CollectionReference colRef = db.collection("wraplify").document(UID).collection("wrap-summaries"); // existing collection for a specific user's summaries
+
+            Map<String, Object> docData = new HashMap<>();
+            ArrayList<String> topSongTitles = new ArrayList<String>();
+            for (int j = 0; j < topSongs.size(); j++) {
+                topSongTitles.add(topSongs.get(j).get(0));
+            }
+            ArrayList<String> topArtistNames = new ArrayList<String>();
+            for (int j = 0; j < topArtists.size(); j++) {
+                topArtistNames.add(topArtists.get(j).get(0));
+            }
+
+            docData.put("topSongs", topSongTitles);
+            docData.put("topArtists", topArtistNames);
+            SimpleDateFormat sdf = new SimpleDateFormat("'Date\n'dd-MM-yyyy '\n\nand\n\nTime\n'HH:mm:ss z");
+            String currentDateAndTime = sdf.format(new Date());
+            String summaryId = "summary" + currentDateAndTime;
+
+            Log.d("INFO", "test");
+            Log.d("INFO", Integer.toString(topSongs.size()));
+            Log.d("INFO", topSongs.get(1).get(1));
+            colRef.document(summaryId)
+                    .set(docData)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Log.d("INFO", "DocumentSnapshot successfully written!");
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.w("ERROR", "Error writing document", e);
+                        }
+                    });
+
             releaseMediaPlayer();
             startActivity(new Intent(playsong.this, MainActivity.class));
         });
@@ -180,6 +183,7 @@ public class playsong extends AppCompatActivity {
                 }
             }
         }
+
 
         // Start playing songs
         playNextTrack();

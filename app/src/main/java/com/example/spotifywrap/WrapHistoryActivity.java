@@ -18,6 +18,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.ArrayList;
+
 public class WrapHistoryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,28 +42,50 @@ public class WrapHistoryActivity extends AppCompatActivity {
         CollectionReference colRef = db.collection("wraplify").document(UID).collection("wrap-summaries"); // existing collection for a specific user's summaries
 
         colRef
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Button summaryBtn = new Button(WrapHistoryActivity.this);
-                                String wrapDate = document.getId();
-                                wrapDate += "\n\n";
+            .get()
+            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Button summaryBtn = new Button(WrapHistoryActivity.this);
+                            String wrapDate = document.getId();
+                            wrapDate += "\n\n";
 //                                summaryBtn.setText(wrapDate);
-                                summaryBtn.setText(wrapDate);
-                                String wrapArtists = document.getData().get("topArtists").toString();
-                                String wrapSongs = document.getData().get("topSongs").toString();
+                            summaryBtn.setText(wrapDate);
+                            ArrayList<ArrayList<String>> wrapArtists = (ArrayList<ArrayList<String>>) document.getData().get("topArtists");
+                            ArrayList<ArrayList<String>> wrapSongs = (ArrayList<ArrayList<String>>) document.getData().get("topSongs");
 
-                                wrapsLayout.addView(summaryBtn);
-                                Log.d("INFO", document.getId() + " => " + document.getData());
+                            ArrayList<String> topSongTitles = new ArrayList<String>();
+                            for (int j = 0; j < wrapSongs.size(); j++) {
+                                topSongTitles.add(wrapSongs.get(j).get(0));
                             }
-                        } else {
-                            Log.d("ERROR", "Error getting documents: ", task.getException());
+                            ArrayList<String> topArtistNames = new ArrayList<String>();
+                            for (int j = 0; j < wrapArtists.size(); j++) {
+                                topArtistNames.add(wrapArtists.get(j).get(0));
+                            }
+
+                            Intent intent = new Intent(WrapHistoryActivity.this, playsong.class);
+                            intent.putStringArrayListExtra("topSongs", topSongTitles);
+                            intent.putStringArrayListExtra("topArtists", topArtistNames);
+
+//                            intent.putStringArrayListExtra("topsongurls", topsongurl);
+//                            intent.putStringArrayListExtra("userProfile", userProfileArray);
+//                            intent.putExtra("recArtists", recArtists);
+//                            intent.putExtra("formatDisplay", formatDisplay.toString());
+
+                            summaryBtn.setOnClickListener(view -> {
+                                startActivity(new Intent(WrapHistoryActivity.this, PastWrapActivity.class));
+                            });
+
+                            wrapsLayout.addView(summaryBtn);
+                            Log.d("INFO", document.getId() + " => " + document.getData());
                         }
+                    } else {
+                        Log.d("ERROR", "Error getting documents: ", task.getException());
                     }
-                });
+                }
+            });
 
     }
 

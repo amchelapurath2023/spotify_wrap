@@ -623,7 +623,7 @@ public class MainActivity extends AppCompatActivity {
                     // The proper indices to access whatever things u need inside the arrays can be found on our meeting docs under the notes for 4/7/24.
                     //The formatDisplay is a placeholder display so that the info from userProfile, topArtists, topSongs, recArtists is readable.
 
-                    Intent intent = new Intent(MainActivity.this, topArtists.class);
+                    Intent intent = new Intent(MainActivity.this, playsong.class);
                     intent.putStringArrayListExtra("topsongurls", topsongurl);
                     intent.putStringArrayListExtra("userProfile", userProfileArray);
                     intent.putExtra("topArtists",topArtists );
