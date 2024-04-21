@@ -49,6 +49,7 @@ public class WrapHistoryActivity extends AppCompatActivity {
                                 Button summaryBtn = new Button(WrapHistoryActivity.this);
                                 String wrapDate = document.getId();
                                 wrapDate += "\n\n";
+//                                summaryBtn.setText(wrapDate);
                                 summaryBtn.setText(wrapDate);
                                 String wrapArtists = document.getData().get("topArtists").toString();
                                 String wrapSongs = document.getData().get("topSongs").toString();
