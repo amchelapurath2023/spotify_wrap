@@ -32,10 +32,11 @@ public class topArtists extends AppCompatActivity {
 
         // Get data from intent
         Intent intent = getIntent();
-        topsongurls = intent.getStringArrayListExtra("topsongurls");
-        ArrayList<ArrayList<String>> topArtists = (ArrayList<ArrayList<String>>) intent.getSerializableExtra("topArtists");
-        System.out.println(topsongurls);
-        System.out.println(topArtists.get(0));
+        topsongurls = getIntent().getStringArrayListExtra("topsongurl");
+        ArrayList<ArrayList<String>> topArtists = (ArrayList<ArrayList<String>>) getIntent().getSerializableExtra("topArtistsNames");
+        ArrayList<ArrayList<String>> recArtists = (ArrayList<ArrayList<String>>) intent.getSerializableExtra("recArtists");
+        ArrayList<ArrayList<String>> topSongs = (ArrayList<ArrayList<String>>) intent.getSerializableExtra("topSongs");
+        mediaPlayer = (MediaPlayer) intent.getSerializableExtra("mediaPlayer");
 
         // Initialize views
         TextView textViewTopSongs = findViewById(R.id.textViewTopSongs);
@@ -87,12 +88,20 @@ public class topArtists extends AppCompatActivity {
 
         // Set click listener for go back button
         goBack.setOnClickListener(view -> {
-            releaseMediaPlayer();
-            startActivity(new Intent(topArtists.this, MainActivity.class));
+            Intent intent1 = new Intent(topArtists.this, playsong.class);
+            intent1.putExtra("topsongurls", topsongurls);
+            intent1.putExtra("topSongs", topSongs);
+            intent1.putExtra("topArtistsNames", topArtists); // Assuming topArtistsNames is an ArrayList<String> containing artist names
+            intent1.putExtra("recArtists", recArtists); // Assuming topArtistsImages is an ArrayList<String> containing image URLs
+
+// Add other data as needed
+
+// Start the topArtists activity
+            startActivity(intent1);
         });
 
         // Start playing songs
-        playNextTrack();
+
     }
 
     // Method to play the next track

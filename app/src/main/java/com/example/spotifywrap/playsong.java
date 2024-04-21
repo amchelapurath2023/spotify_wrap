@@ -40,10 +40,9 @@ public class playsong extends AppCompatActivity {
         Intent intent = getIntent();
         topsongurls = intent.getStringArrayListExtra("topsongurls");
         ArrayList<ArrayList<String>> recArtists = (ArrayList<ArrayList<String>>) intent.getSerializableExtra("recArtists");
-        ArrayList<ArrayList<String>> topArtists = (ArrayList<ArrayList<String>>) intent.getSerializableExtra("topArtists");
+        ArrayList<ArrayList<String>> topArtists = (ArrayList<ArrayList<String>>) intent.getSerializableExtra("topArtistsNames");
         ArrayList<ArrayList<String>> topSongs = (ArrayList<ArrayList<String>>) intent.getSerializableExtra("topSongs");
-        ArrayList<String> userProfile = intent.getStringArrayListExtra("userProfile");
-        String formatDisplay = intent.getStringExtra("formatDisplay");
+
 
         // Initialize views
         TextView reccomended = findViewById(R.id.recArtist);
@@ -63,6 +62,8 @@ public class playsong extends AppCompatActivity {
         // Load profile picture into ImageView using Picasso
         String imageUrl = topSongs.get(0).get(2); // Assuming the first element is the image URL
 
+
+
         Picasso.get().load(imageUrl).into(topAlbumCoverImageView, new Callback() {
             @Override
             public void onSuccess() {
@@ -77,7 +78,6 @@ public class playsong extends AppCompatActivity {
 
         // Set click listener for go back button
         goBack.setOnClickListener(view -> {
-            releaseMediaPlayer();
             startActivity(new Intent(playsong.this, MainActivity.class));
         });
         reccomended.setText(recArtists.get(0).get(0));
@@ -117,24 +117,17 @@ public class playsong extends AppCompatActivity {
             }
         }
 
-        // Start playing songs
-        playNextTrack();
+
     }
 
 
     // Method to play the next track
     private void playNextTrack() {
-        if (mediaPlayer != null) {
-            mediaPlayer.release();
-            mediaPlayer = null;
-        }
-
         if (currentTrackIndex < topsongurls.size()) {
             String audioUrl = topsongurls.get(currentTrackIndex);
-            mediaPlayer = new MediaPlayer();
-            mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 
             try {
+                mediaPlayer.reset(); // Reset the MediaPlayer to play the next track
                 mediaPlayer.setDataSource(audioUrl);
                 mediaPlayer.prepare();
                 mediaPlayer.start();
