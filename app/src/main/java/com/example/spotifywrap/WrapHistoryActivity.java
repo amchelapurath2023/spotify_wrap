@@ -3,6 +3,8 @@ package com.example.spotifywrap;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
@@ -61,7 +63,19 @@ public class WrapHistoryActivity extends AppCompatActivity {
                                 summaryBtn.setText(wrapDate);
                                 String wrapArtists = document.getData().get("topArtists").toString();
                                 String wrapSongs = document.getData().get("topSongs").toString();
+                                summaryBtn.setTextColor(summaryBtn.getContext().getResources().getColor(R.color.white));
+//                                summaryBtn.setTextAppearance(android.R.style);
+                                summaryBtn.setTextSize(20);
+                                summaryBtn.setTypeface(getResources().getFont(R.font.urbanist_regular));
+                                summaryBtn.setGravity(Gravity.CENTER);
 
+//                                int[] attrs = {android.R.attr.textAppearance};
+//                                TypedValue typedValue = new TypedValue();
+//                                getTheme().resolveAttribute(android.R.attr.textAppearance, typedValue, true);
+//                                int textAppearanceResId = typedValue.resourceId;
+
+                                // Set text appearance to match the XML button
+//                                summaryBtn.setTextAppearance(textAppearanceResId);
 
                                 wrapsLayout.addView(summaryBtn);
                                 Log.d("INFO", document.getId() + " => " + document.getData());
