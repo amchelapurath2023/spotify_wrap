@@ -42,6 +42,11 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     private void resetPassword() {
         String email = emailAddress.getText().toString().trim();
 
+        if (email.isEmpty()){
+            emailAddress.setError("Enter an email");
+            return;
+        }
+
         FirebaseAuth.getInstance().sendPasswordResetEmail(email)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
@@ -51,6 +56,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                             finish();
                         } else {
                             Toast.makeText(ForgotPasswordActivity.this, "Failed to send reset email", Toast.LENGTH_SHORT).show();
+                            emailAddress.setError("Invalid email");
                         }
                     }
                 });
