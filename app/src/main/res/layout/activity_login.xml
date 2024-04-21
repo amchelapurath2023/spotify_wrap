@@ -14,9 +14,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:alpha="0.6"
+        android:backgroundTintMode="screen"
         android:fontFamily="@font/urbanist_bold"
         android:text="wraplify"
-        android:backgroundTintMode="screen"
         android:textColor="@color/white"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -25,7 +25,7 @@
 
     <LinearLayout
         android:id="@+id/linearLayout4"
-        android:layout_width="363dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -55,6 +55,7 @@
             app:placeholderTextColor="@color/white"
             app:hintTextColor="@color/white"
             app:cursorColor="@color/white"
+            android:textColorHighlight="@color/blue"
             >
 
             <com.google.android.material.textfield.TextInputEditText
@@ -78,7 +79,9 @@
             app:boxStrokeErrorColor="@color/white"
             app:placeholderTextColor="@color/white"
             app:hintTextColor="@color/white"
-            app:cursorColor="@color/white">
+            app:cursorColor="@color/white"
+            android:textColorHighlight="@color/blue"
+            >
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etLoginPass"
@@ -97,7 +100,8 @@
             android:layout_marginTop="24dp"
             android:backgroundTint="@color/blue"
             android:fontFamily="@font/urbanist_bold"
-            android:text="Login" />
+            android:text="Login"
+            android:textSize="20sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -120,7 +124,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
                 android:fontFamily="@font/urbanist_bold"
-                android:text="Register here"
+                android:text="Sign Up Here"
                 android:textColor="@color/red"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -150,7 +154,7 @@
                 android:layout_marginLeft="8dp"
                 android:fontFamily="@font/urbanist_bold"
                 android:text="Reset Password"
-                android:textColor="@color/blue"
+                android:textColor="@color/green"
                 android:textSize="20sp"
                 android:textStyle="bold" />
         </LinearLayout>
