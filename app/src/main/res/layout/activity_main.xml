@@ -4,19 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg_final_wrapped"
     tools:context=".MainActivity">
 
     <!-- ImageView -->
     <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:id="@+id/wraplifyLogo"
+        android:layout_width="268dp"
+        android:layout_height="177dp"
         android:layout_gravity="center"
-        android:layout_marginTop="50dp"
-        android:src="@drawable/spotify_logo_with_text"
-        app:layout_constraintTop_toTopOf="parent"
+        android:src="@drawable/wraplify_logo_trans"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <!-- Welcome message -->
     <TextView
@@ -25,8 +26,11 @@
         android:layout_height="wrap_content"
         android:text="Welcome, You are logged in "
         android:textSize="30sp"
+        android:layout_marginTop="70dp"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        android:textColor="@color/white"
+        android:fontFamily="@font/urbanist_bold"
+        app:layout_constraintTop_toBottomOf="@+id/wraplifyLogo"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -51,7 +55,9 @@
         android:text="View Past Wraps"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        android:fontFamily="@font/urbanist_bold"
+        android:backgroundTint="@color/gold"/>
 
     <!-- "Choose Your Summary" TextView -->
     <TextView
@@ -60,6 +66,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="Choose Your Summary: "
+        android:textColor="@color/white"
+        android:fontFamily="@font/urbanist_regular"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -79,6 +87,8 @@
         <Button
             android:id="@+id/timeframe_button_short"
             android:layout_width="0dp"
+            android:fontFamily="@font/urbanist_bold"
+            android:backgroundTint="@color/blue"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
@@ -90,7 +100,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:text="Last 6 Months" />
+            android:text="Last 6 Months"
+            android:fontFamily="@font/urbanist_bold"
+            android:backgroundTint="@color/red"/>
 
         <Button
             android:id="@+id/timeframe_button_long"
@@ -98,7 +110,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:text="Last Several Years" />
+            android:text="Last Several Years"
+            android:fontFamily="@font/urbanist_bold"
+            android:backgroundTint="@color/green"/>
 
     </LinearLayout>
 <!--    <LinearLayout-->
@@ -176,7 +190,9 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginBottom="16dp" />
+        android:layout_marginBottom="16dp"
+        android:fontFamily="@font/urbanist_bold"
+        android:backgroundTint="@color/navy"/>
 
     <!-- Settings button -->
     <Button
@@ -187,6 +203,8 @@
         app:layout_constraintBottom_toTopOf="@id/btnLogout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginBottom="16dp" />
+        android:layout_marginBottom="16dp"
+        android:fontFamily="@font/urbanist_bold"
+        android:backgroundTint="@color/navy"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
