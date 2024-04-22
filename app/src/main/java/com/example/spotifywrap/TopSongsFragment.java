@@ -12,6 +12,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Source;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
@@ -23,6 +32,8 @@ public class TopSongsFragment extends Fragment {
     private int currentTrackIndex = 0;
     private ArrayList<ArrayList<String>> topSongs;
     private Button goBack;
+
+    private String username;
 
     private OnGoToTopArtistsListener goToTopArtistsListener;
 
@@ -91,6 +102,42 @@ public class TopSongsFragment extends Fragment {
                 view.findViewById(R.id.textViewArtist4),
                 view.findViewById(R.id.textViewArtist5)
         };
+
+
+
+
+        TextView topA = view.findViewById(R.id.textViewTopSongs);
+
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance(); // db of wrapped for each user
+        if (user != null) {
+            String UID = user.getUid(); // firebase user id
+            DocumentReference docRef = db.collection("wraplify").document(UID);
+            Source source = Source.CACHE;
+
+            // Get the document, forcing the SDK to use the offline cache
+            docRef.get(source).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        // Document found in the offline cache
+                        DocumentSnapshot document = task.getResult();
+                        username = document.getData().get("username").toString();
+                        topA.setText(username + "'s Top Artists");
+                        Log.d("INFO", "Cached document data: " + document.getData());
+                    } else {
+                        Log.d("ERROR", "Cached get failed: ", task.getException());
+                    }
+                }
+            });
+        }
+        else {
+            Log.d("ERROR", "not logged in");
+
+        }
+
         goBack = view.findViewById(R.id.button);
         // Populate UI with top song data
         if (topsongurls != null && !topsongurls.isEmpty()) {

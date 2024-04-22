@@ -12,8 +12,30 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Source;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Source;
+import com.spotify.sdk.android.auth.AuthorizationClient;
+import com.spotify.sdk.android.auth.AuthorizationRequest;
+import com.spotify.sdk.android.auth.AuthorizationResponse;
+
+
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 public class TopArtistFragment extends Fragment {
@@ -21,6 +43,8 @@ public class TopArtistFragment extends Fragment {
     private ArrayList<String> topsongurls;
     private ArrayList<ArrayList<String>> topArtists;
     private OnGoToFinalWrapListener goToFinalWrapListener;
+
+    String username;
 
     public interface OnGoToFinalWrapListener {
         void onGoToFinalWrap();
@@ -78,6 +102,41 @@ public class TopArtistFragment extends Fragment {
                 view.findViewById(R.id.textViewSong4),
                 view.findViewById(R.id.textViewSong5)
         };
+
+        TextView topA = view.findViewById(R.id.textViewTopSongs);
+
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance(); // db of wrapped for each user
+        if (user != null) {
+            String UID = user.getUid(); // firebase user id
+            DocumentReference docRef = db.collection("wraplify").document(UID);
+            Source source = Source.CACHE;
+
+            // Get the document, forcing the SDK to use the offline cache
+            docRef.get(source).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        // Document found in the offline cache
+                        DocumentSnapshot document = task.getResult();
+                        username = document.getData().get("username").toString();
+                        topA.setText(username + "'s Top Artists");
+                        Log.d("INFO", "Cached document data: " + document.getData());
+                    } else {
+                        Log.d("ERROR", "Cached get failed: ", task.getException());
+                    }
+                }
+            });
+        }
+        else {
+            Log.d("ERROR", "not logged in");
+
+        }
+
+
+
 
         // Populate UI with top artist data
         if (topsongurls != null && !topsongurls.isEmpty()) {
